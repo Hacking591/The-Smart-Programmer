@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - The Smart Programmer</title>
+  <style>/* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #ecf0f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 400px;
+      margin: 20px;
+    }
+    
+    .form-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      font-size: 16px;
+      color: #2c3e50;
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #2980b9;
+    }
+    
+    p {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    p a {
+      color: #3498db;
+      text-decoration: none;
+    }
+    
+    p a:hover {
+      text-decoration: underline;
+    }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <h2>Sign Up</h2>
+      <form id="signUpForm">
+        <div class="form-group">
+          <label for="firstName">Emri</label>
+          <input type="text" id="firstName" name="firstName" required>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Mbiemri</label>
+          <input type="text" id="lastName" name="lastName" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Fjalëkalimi</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Regjistrohu</button>
+      </form>
+      <p>Keni një llogari? <a href="sign in.html">Hyni këtu</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Simple sign up form handling (you can later connect this to a backend)
+    document.getElementById('signUpForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // Save to localStorage (simulation)
+      const user = { firstName, lastName, email, password };
+      localStorage.setItem(email, JSON.stringify(user));
+
+      alert("Regjistrimi ishte i suksesshëm! Tani mund të hyni në llogarinë tuaj.");
+      window.location.href = "signin.html"; // Redirigjimi për të hyrë
+    });
+  </script>
+</body>
+</html>

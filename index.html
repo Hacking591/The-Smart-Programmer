@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Smart Programmer</title>
+  <a href="sign in.html">Logohuni ne profilin tuaj</a>
+  <a href="sign up.html">Regjistrohun per te pasur nje profil tuajin</a>
+  <link rel="website icon" type="png" href="images/python-icon.png">
+  <style>/* General Styles */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+    
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 10px 0;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+    
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+    
+    nav ul li {
+      display: inline;
+    }
+    
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      transition: color 0.3s ease;
+    }
+    
+    nav ul li a:hover {
+      color: #3498db;
+    }
+    
+    .hero-section {
+      height: 100vh;
+      background: linear-gradient(45deg, #2980b9, #8e44ad);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      perspective: 1000px;
+    }
+    
+    .hero-content h1 {
+      font-size: 48px;
+      font-weight: bold;
+      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .hero-content p {
+      font-size: 24px;
+    }
+    
+    .services-section {
+      padding: 50px 20px;
+      text-align: center;
+      background-color: #ecf0f1;
+    }
+    
+    .services-section h2 {
+      font-size: 36px;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+    
+    .service-cards {
+      display: flex;
+      justify-content: space-around;
+      gap: 20px;
+    }
+    
+    .card {
+      background-color: #fff;
+      width: 250px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
+      text-align: center;
+    }
+    
+    .card:hover {
+      transform: rotateY(20deg) rotateX(10deg);
+    }
+    
+    .card h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    
+    .card p {
+      font-size: 16px;
+      color: #7f8c8d;
+    }
+    
+    .footer {
+      background-color: #34495e;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .contact-section {
+  padding: 50px 20px;
+  background-color: #ecf0f1;
+  text-align: center;
+}
+
+.contact-section h2 {
+  font-size: 36px;
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+
+.contact-section .form-group {
+  margin-bottom: 20px;
+  text-align: left;
+  display: inline-block;
+  width: 100%;
+  max-width: 400px;
+}
+
+.contact-section label {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.contact-section input,
+.contact-section textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.contact-section button {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contact-section button:hover {
+  background-color: #2980b9;
+}
+.card {
+  background-color: #fff;
+  width: 250px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform-style: preserve-3d;
+  transition: transform 0.5s, box-shadow 0.3s ease;
+  text-align: center;
+  cursor: pointer; /* Tregon që mund të klikosh */
+}
+
+.card:hover {
+  transform: rotateY(20deg) rotateX(10deg) scale(1.1);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Efekt i zgjeruar i hijes */
+}
+
+.card h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 16px;
+  color: #7f8c8d;
+}
+
+.card a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+    </style>
+</head>
+<body>
+  <header class="header">
+    <div class="navbar">
+      <div class="logo">The Smart Programmer</div>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">Rreth Nesh</a></li>
+          <li><a href="#services">Shërbimet</a></li>
+          <li><a href="#contact">Kontakt</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section id="home" class="hero-section">
+    <div class="hero-content">
+      <h1>Mirësevini në faqen tone!</h1>
+      <p>Ne ofrojme sherbime te cilat mund ti shikoni me poshte.</p>
+    </div>
+  </section>
+  <a href="privacypolicy.html">Shiko rregullat e kompanise tone.</a>
+
+  <section id="services" class="services-section">
+    <h2>Shërbimet që Ofrojmë</h2>
+    <!-- Kartat për shërbimet -->
+<div class="service-cards">
+  <div class="card" id="service1">
+    <a href="service1.html">
+      <h3>Hakime</h3>
+      <p>Ne ofrojme hakime, c'do te thote hakime? Hakime do te thote qe ne mund te hakojme per lojera, leke p.sh (Crypto Coin), per rrjetet sociale etj. Cmimi eshte 400 leke te reja. (Per 10 abonentet e pare eshte 250 leke.)</p>
+    </a>
+  </div>
+  <div class="card" id="service2">
+    <a href="service2.html">
+      <h3>Krijime</h3>
+      <p>Ne mund te krijojme faqe interneti (Web Page), aplikacione te ndryshme sipas kerkeses suaj etj. Cmimi eshte 250 leke te reja. (Per 10 abonentet e pare eshte 150 leke.)</p>
+    </a>
+  </div>
+  <div class="card" id="service3">
+    <a href="service3.html">
+      <h3>Ndihme</h3>
+      <p>Ne gjithashtu ofrojme ndihme edhe kur doni te krijoni, hakoni, per mesimet etj. Cmimi eshte 350 leke te reja. (Per 10 abonentet e pare eshte 250 leke.)</p>
+    </a>
+  </div>
+</div>
+
+  </section>
+
+  <section id="contact" class="contact-section">
+    <h2>Na Kontaktoni</h2>
+    <form id="contactForm">
+      <div class="form-group">
+        <label for="name">Emri juaj</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email juaj</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Mesazhi juaj</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+      </div>
+      <button type="submit">Dërgo Mesazhin</button>
+    </form>
+  </section>
+  
+
+  <footer id="contact" class="footer">
+    <p>Kontaktoni: gertlula2003@gmail.com</p>
+  </footer>
+
+  <h3>Cdo mesim qe ne ju japim eshte vetem për qëllime arsimore!</h3>
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Parandalon dërgimin e formës, pasi po përdorim JavaScript
+  
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+  
+    const subject = `Kontakti nga ${name}`;
+    const body = `Emri: ${name}\nEmail: ${email}\nMesazhi:\n${message}`;
+  
+    // Krijon URL për dërgimin e email-it
+    const mailtoLink = `mailto:gertlula2003@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  
+    // Hap klientin e emailit
+    window.location.href = mailtoLink;
+  });
+
+  // Simulimi i regjistrimit dhe hyrjes me localStorage
+  document.getElementById('signUpForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('emailSignUp').value;
+    const password = document.getElementById('passwordSignUp').value;
+
+    // Verifikimi i mundësisë së regjistrimit
+    if (localStorage.getItem(email)) {
+      alert("Ky email është regjistruar tashmë!");
+      return;
+    }
+
+    // Ruajmë të dhënat në localStorage
+    const user = { firstName, lastName, email, password, services: [] };
+    localStorage.setItem(email, JSON.stringify(user));
+
+    alert("Regjistrimi ishte i suksesshëm!");
+
+    // Pas regjistrimit mund të kalojmë në faqen e hyrjes (sign in)
+    document.getElementById('signInSection').style.display = "block";
+    document.getElementById('signUpSection').style.display = "none";
+  });
+
+  // Simulimi i hyrjes (Sign In)
+  document.getElementById('signInForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('emailSignIn').value;
+    const password = document.getElementById('passwordSignIn').value;
+
+    const user = JSON.parse(localStorage.getItem(email));
+
+    if (user && user.password === password) {
+      // Kaloni në faqen e profilit (sipas informacionit të përdoruesit)
+      localStorage.setItem('loggedInUser', email);
+      window.location.href = 'profile.html';  // Dërgoni në faqen e profilit të përdoruesit
+    } else {
+      alert("Email ose fjalëkalim të gabuar!");
+    }
+  });
+  </script>
+</body>
+</html>

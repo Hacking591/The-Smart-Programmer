@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - The Smart Programmer</title>
+  <style>/* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #ecf0f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 400px;
+      margin: 20px;
+    }
+    
+    .form-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      font-size: 16px;
+      color: #2c3e50;
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #2980b9;
+    }
+    
+    p {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    p a {
+      color: #3498db;
+      text-decoration: none;
+    }
+    
+    p a:hover {
+      text-decoration: underline;
+    }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <h2>Sign In</h2>
+      <form id="signInForm">
+        <div class="form-group">
+          <label for="emailSignIn">Email</label>
+          <input type="email" id="emailSignIn" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="passwordSignIn">Fjalëkalimi</label>
+          <input type="password" id="passwordSignIn" name="password" required>
+        </div>
+        <button type="submit">Hyr</button>
+      </form>
+      <p>Ende nuk keni një llogari? <a href="sign up.html">Regjistrohu këtu</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('signInForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('emailSignIn').value;
+      const password = document.getElementById('passwordSignIn').value;
+
+      const user = JSON.parse(localStorage.getItem(email));
+
+      if (user && user.password === password) {
+        alert("Hyrje e suksesshme!");
+        localStorage.setItem('loggedInUser', email);
+        window.location.href = "profile.html"; // Redirect to the profile page
+      } else {
+        alert("Email ose fjalëkalim të gabuar!");
+      }
+    });
+  </script>
+</body>
+</html>
