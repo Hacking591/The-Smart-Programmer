@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In / Sign Up</title>
+    <style>
+        /* Stilizimi për trupin dhe elementët themelorë */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Forma për regjistrim dhe kyçje */
+        .form-container {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #5c6bc0;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #3f51b5;
+        }
+
+        /* Stilizimi për dashboard */
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-gap: 30px;
+        }
+
+        .dashboard-item {
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            height: 150px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #e9ecef;
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 30%;
+            padding: 10px;
+            background-color: #5c6bc0;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3f51b5;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        /* Përshtatja për ekranet më të vogla */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="signInForm" class="form-container">
+            <h2>Sign In</h2>
+            <form id="signin">
+                <label for="username">Username</label>
+                <input type="text" id="signInUsername" required>
+                <label for="password">Password</label>
+                <input type="password" id="signInPassword" required>
+                <button type="button" onclick="signIn()">Sign In</button>
+            </form>
+        </div>
+
+        <div id="dashboard" class="dashboard-container" style="display:none;">
+            <h2>Admin Dashboard</h2>
+            <div class="dashboard-grid">
+                <!-- Detyrat e ditës -->
+                <div class="dashboard-item">
+                    <h3>Daily Tasks</h3>
+                    <textarea id="dailyTasks" placeholder="What do you need to do today?"></textarea>
+                    <button onclick="saveTasks()">Save Tasks</button>
+                </div>
+                <div class="dashboard-item">
+                    <h3>Paid Clients</h3>
+                    <ul id="paidClientsList"></ul>
+                    <input type="text" id="paidClientName" placeholder="Add Paid Client">
+                    <button onclick="addPaidClient()">Add Paid Client</button>
+                </div>
+                <!-- Klientët -->
+                <div class="dashboard-item">
+                    <h3>Clients</h3>
+                    <ul id="clientsList"></ul>
+                    <input type="text" id="clientName" placeholder="Add Client">
+                    <button onclick="addClient()">Add Client</button>
+                </div>
+                <!-- Kërkesat e klientëve -->
+                <div class="dashboard-item">
+                    <h3>Client Requests</h3>
+                    <ul id="clientRequests"></ul>
+                    <input type="text" id="clientRequest" placeholder="Add Client Request">
+                    <button onclick="addClientRequest()">Add Request</button>
+                </div>
+            </div>
+            <button onclick="signOut()">Sign Out</button>
+        </div>
+    </div>
+
+    <script>let adminUsername = "Admin";
+        let adminPassword = "Acc3ss@thesmartprogrammer";
+        let dailyTasks = "";
+        let clients = ["Enea Yzeiraj, Alvi Nasto, Henes Suka, Matia Balla"];
+        let clientRequests = ["Enea Yzeiraj (krijim per nje faqe webi)"];
+        let  paidClients= ["Enea Yzeiraj (0 leke))"];
+        
+        function signUp() {
+            let username = document.getElementById("signUpUsername").value;
+            let password = document.getElementById("signUpPassword").value;
+            
+            if (username === adminUsername) {
+                adminPassword = password;
+                alert("Sign up successful!");
+                document.getElementById("signUpForm").style.display = "none";
+                document.getElementById("signInForm").style.display = "block";
+            } else {
+                alert("Only Admin can sign up.");
+            }
+        }
+        
+        function signIn() {
+            let username = document.getElementById("signInUsername").value;
+            let password = document.getElementById("signInPassword").value;
+            
+            if (username === adminUsername && password === adminPassword) {
+                document.getElementById("signInForm").style.display = "none";
+                document.getElementById("dashboard").style.display = "block";
+            } else {
+                alert("Invalid credentials.");
+            }
+        }
+        
+        function saveTasks() {
+            dailyTasks = document.getElementById("dailyTasks").value;
+            alert("Tasks saved!");
+        }
+        
+        function addClient() {
+            let clientName = document.getElementById("clientName").value;
+            if (clientName) {
+                clients.push(clientName);
+                updateClientList();
+            }
+        }
+        
+        function addClientRequest() {
+            let request = document.getElementById("clientRequest").value;
+            if (request) {
+                clientRequests.push(request);
+                updateClientRequests();
+            }
+        }
+        function addPaidClient() {
+            let paidClientName = document.getElementById("paidClientName").value;
+            if (paidClientName) {
+                paidClients.push(paidClientName);
+                updatePaidClientList();
+            }
+        }
+        
+        function updateClientList() {
+            let clientListElement = document.getElementById("clientsList");
+            clientListElement.innerHTML = "";
+            clients.forEach(client => {
+                let li = document.createElement("li");
+                li.textContent = client;
+                clientListElement.appendChild(li);
+            });
+        }
+        
+        function updateClientRequests() {
+            let clientRequestElement = document.getElementById("clientRequests");
+            clientRequestElement.innerHTML = "";
+            clientRequests.forEach(request => {
+                let li = document.createElement("li");
+                li.textContent = request;
+                clientRequestElement.appendChild(li);
+            });
+        }
+        
+        function signOut() {
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById("signInForm").style.display = "block";
+        }
+        </script>
+</body>
+</html>
