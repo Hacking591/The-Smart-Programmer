@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Smart Programmer - Faqja e Rezervimit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input, select {
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            background: #ff7b00;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+        h1 {
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <h1>Rezervo për një shërbim</h1>
+    <div class="container">
+        <form id="bookingForm">
+            <input type="text" id="name" placeholder="Emër Mbiemër" required>
+            <input type="email" id="email" placeholder="E-mail" required>
+            <select id="service" required>
+                <option value="">Zgjidh një shërbim</option>
+                <option value="Web Development">Hakim</option>
+                <option value="App Development">Krijime</option>
+                <option value="Graphic Design">Editime</option>
+                <option value="Consulting">Ndihme</option>
+            </select>
+            <input type="date" id="date" required>
+            <button type="submit">Rezervo Tani</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const service = document.getElementById('service').value;
+            const date = document.getElementById('date').value;
+            
+            const mailtoLink = `mailto:gertlula2003@gmail.com?subject=Rezervim i Ri&body=Emër: ${name}%0AE-mail: ${email}%0AShërbimi: ${service}%0ADatë: ${date}`;
+            window.location.href = mailtoLink;
+        });
+    </script>
+</body>
+</html>
