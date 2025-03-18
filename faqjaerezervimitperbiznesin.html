@@ -56,13 +56,13 @@
         <form id="bookingForm">
             <input type="text" id="name" placeholder="Emër Mbiemër" required>
             <input type="email" id="email" placeholder="E-mail" required>
-            <input type="date" id="name" placeholder="Data per perfundimin e sherbimit" required>
+            <input type="date" id="completionDate" placeholder="Data për përfundimin e shërbimit" required>
             <select id="service" required>
                 <option value="">Zgjidh një shërbim</option>
                 <option value="Web Development">Hakim</option>
                 <option value="App Development">Krijime</option>
                 <option value="Graphic Design">Editime</option>
-                <option value="Consulting">Ndihme</option>
+                <option value="Consulting">Ndihmë</option>
             </select>
             <input type="date" id="date" required>
             <button type="submit">Rezervo Tani</button>
@@ -75,11 +75,13 @@
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const service = document.getElementById('service').value;
-          
+            const date = document.getElementById('date').value;
+            const completionDate = document.getElementById('completionDate').value;
             
-            const mailtoLink = `mailto:gertlula2003@gmail.com?subject=Rezervim i Ri&body=Emër: ${name}%0AE-mail: ${email}%0AShërbimi: ${service}%0ADatë: ${date}%0ADatë;
+            const mailtoLink = `mailto:gertlula2003@gmail.com?subject=Rezervim i Ri&body=Emër: ${encodeURIComponent(name)}%0AE-mail: ${encodeURIComponent(email)}%0AShërbimi: ${encodeURIComponent(service)}%0ADatë Rezervimi: ${encodeURIComponent(date)}%0ADatë Përfundimi: ${encodeURIComponent(completionDate)}`;
+            
             window.location.href = mailtoLink;
         });
     </script>
-</body>
+</body> 
 </html>
