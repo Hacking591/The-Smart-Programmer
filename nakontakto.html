@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Na Kontakto</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+
+    form {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    input, textarea, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Na Kontakto</h2>
+  <form id="contact-form">
+    <input type="text" id="name" placeholder="Emri juaj" required />
+    <input type="email" id="email" placeholder="Email-i juaj" required />
+    <textarea id="message" placeholder="Mesazhi juaj" rows="5" required></textarea>
+    <button type="submit">Dërgo</button>
+  </form>
+
+  <script>
+    document.getElementById("contact-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message").value;
+
+      const subject = encodeURIComponent("Mesazh nga " + name);
+      const body = encodeURIComponent("Emri: " + name + "\nEmail: " + email + "\n\nMesazhi:\n" + message);
+
+      window.location.href = `mailto:thesmartprogrammer591@gmail.com?subject=${subject}&body=${body}`;
+    });
+  </script>
+
+</body>
+</html>
