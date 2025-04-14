@@ -38,7 +38,20 @@
     <p>Kontakto: thesmartprogrammer591@email.com</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    document.getElementById("contact-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
+
+    const subject = encodeURIComponent("Mesazh nga " + name);
+    const body = encodeURIComponent("Emri: " + name + "\nEmail: " + email + "\n\nMesazhi:\n" + message);
+
+  window.location.href = `mailto:thesmartprogrammer591@gmail.com?subject=${subject}&body=${body}`;
+});
+  </script>
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 </body>
 </html>
