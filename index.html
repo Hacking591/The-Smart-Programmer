@@ -1,60 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sq">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Smart Programmer</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Smart Programmer</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header>
+    <h1 class="logo">The Smart Programmer</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Lajmet dhe Blogu</a></li>
+        <li><a href="sherbimi.html">Shërbimi</a></li>
+        <li><a href="#rreth">Rreth Nesh</a></li>
+        <li><a href="#kontakt">Na Kontakto</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- Navbar -->
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Courses</a></li>
-                <li><a href="#">Trainers</a></li>
-                <li><a href="#">Students</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+  <section class="hero">
+    <div class="hero-box">
+      <h2>Mirë se erdhe te The Smart Programmer!</h2>
+      <p>Ne ofrojmë kurse, ndihmë dhe shërbime të teknologjisë me cilësi të lartë.</p>
+    </div>
+  </section>
 
-    <!-- Main Section -->
-    <section class="main-section">
-        <h1>Welcome to The Smart Programmer</h1>
-        <p>Your one-stop platform for programming courses, tutorials, and more!</p>
-        <a href="login.html">Log-in</a>
-    </section>
+  <footer id="kontakt">
+    <p>Kontakto: thesmartprogrammer591@email.com</p>
+  </footer>
 
-    <!-- Courses -->
-    <section class="courses">
-        <h2>Our Courses</h2>
-        <div class="course-list">
-            <div class="course-card">
-                <h3>Web Development</h3>
-                <p>Learn to build stunning websites using HTML, CSS, and JavaScript.</p>
-            </div>
-            <div class="course-card">
-                <h3>App Development</h3>
-                <p>Build mobile applications for Android and iOS.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Form -->
-    <section id="contact" class="contact-form">
-        <h2>Contact Us</h2>
-        <form id="contactForm">
-            <input type="text" id="name" placeholder="Your Name" required>
-            <input type="email" id="email" placeholder="Your Email" required>
-            <textarea id="message" placeholder="Your Message" required></textarea>
-            <button type="submit">Send Message</button>
-        </form>
-    </section>
-
-    <script src="script.js"></script>
-    <script src="server.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
