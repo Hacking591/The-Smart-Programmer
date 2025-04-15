@@ -21,6 +21,13 @@
     <h3>Orari i Mësimeve</h3>
     <div id="scheduleList"></div>
   </div>
+  <div class="box">
+  <h3>Ndrysho Fjalëkalimin</h3>
+  <input type="password" id="oldPass" placeholder="Fjalëkalimi i vjetër" /><br>
+  <input type="password" id="newPass" placeholder="Fjalëkalimi i ri" /><br>
+  <button onclick="changePassword()">Ndrysho</button>
+</div>
+
 
   <script>
     const user = JSON.parse(localStorage.getItem("loggedUser"));
