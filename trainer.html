@@ -33,6 +33,32 @@
     <h2>Menaxho Nxënësit</h2>
     <div id="allStudents"></div>
   </div>
+  <h2>Mesazhet nga Nxënësit</h2>
+  <div id="messagesContainer"></div>
+
+  <script>
+    function loadMessages() {
+      const messages = JSON.parse(localStorage.getItem("trainerMessages")) || [];
+      const container = document.getElementById("messagesContainer");
+
+      if (messages.length === 0) {
+        container.innerHTML = "<p>Nuk ka mesazhe.</p>";
+        return;
+      }
+
+      let html = "";
+      messages.forEach(msg => {
+        html += `<div style="margin-bottom: 10px;">
+                  <strong>${msg.from}</strong> (${msg.timestamp}):<br>
+                  ${msg.text}
+                </div><hr>`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    loadMessages();
+  </script>
 
 
   <script>
