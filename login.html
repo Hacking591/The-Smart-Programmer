@@ -42,6 +42,8 @@
     </select>
     <button onclick="login()">Hyr</button>
   </div>
+  <button onclick="redirectToRegister()">Regjistrohu</button>
+
 
   <script>
     function login() {
@@ -52,6 +54,9 @@
       if (!username || !password) {
         alert("Ju lutem plotësoni të gjitha fushat.");
         return;
+      }
+      function redirectToRegister() {
+        window.location.href = "register.html";
       }
 
       if (role === "trainer") {
