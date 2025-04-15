@@ -7,120 +7,12 @@
     body { font-family: Arial; padding: 20px; }
     input, select, button { margin: 5px 0; padding: 7px; }
     .box { margin-bottom: 20px; }
-    <style>
-    /* Reset & Font */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", sans-serif;
-    }
-    
-    body {
-      background: linear-gradient(to right, #1f1c2c, #928dab);
-      color: #fff;
-      min-height: 100vh;
-      padding: 40px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    /* Container style */
-    .container, .box {
-      background: rgba(255, 255, 255, 0.07);
-      border-radius: 20px;
-      padding: 30px;
-      margin: 15px 0;
-      width: 90%;
-      max-width: 600px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-    }
-    
-    h1, h2, h3, h4 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #f0eaff;
-    }
-    
-    /* Input styles */
-    input, textarea, select {
-      width: 100%;
-      padding: 10px 15px;
-      margin: 10px 0 20px;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-      font-size: 16px;
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      box-shadow: inset 0 0 5px rgba(255,255,255,0.2);
-    }
-    
-    textarea {
-      resize: vertical;
-    }
-    
-    /* Buttons */
-    button {
-      background: #6a82fb;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-right: 10px;
-    }
-    
-    button:hover {
-      background: #a18cd1;
-      transform: scale(1.05);
-    }
-    
-    /* Messages & content */
-    #messageBox div, #allMessages div {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px 15px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-    
-    strong {
-      color: #ffeb3b;
-    }
-    
-    em {
-      color: #ccc;
-      font-size: 13px;
-    }
-    
-    /* Responsive tweaks */
-    @media (max-width: 600px) {
-      .container, .box {
-        padding: 20px;
-      }
-    
-      button {
-        width: 100%;
-        margin-bottom: 10px;
-      }
-    }
-</style>
-
   </style>
 </head>
 <body>
   <h1>Portali i Trajnerit</h1>
   <p id="trainerWelcome"></p>
   <button onclick="logout()">Dil</button>
-  <div class="box">
-  <h2>Menaxho Nxënësit</h2>
-  <div id="allStudents"></div>
-</div>
-
 
   <div class="box">
     <h2>Regjistro Student</h2>
@@ -128,14 +20,6 @@
     <button onclick="registerStudent()">Regjistro</button>
     <div id="studentList"></div>
   </div>
-  <div class="box">
-    <h3>Regjistro Nxënës të Ri</h3>
-    <input type="text" id="newStudentName" placeholder="Emri i Nxënësit">
-    <input type="text" id="newStudentUsername" placeholder="Username i Nxënësit">
-    <input type="password" id="newStudentPassword" placeholder="Password i Nxënësit">
-    <button onclick="registerStudent()">Regjistro</button>
-  </div>
-
 
   <div class="box">
     <h2>Shto Orar Mësimi</h2>
@@ -145,13 +29,6 @@
     <button onclick="addSchedule()">Shto</button>
     <div id="scheduleList"></div>
   </div>
-  <div class="box">
-  <h3>Ndrysho Fjalëkalimin</h3>
-  <input type="password" id="oldPass" placeholder="Fjalëkalimi i vjetër" /><br>
-  <input type="password" id="newPass" placeholder="Fjalëkalimi i ri" /><br>
-  <button onclick="changePassword()">Ndrysho</button>
-</div>
-
 
   <script>
     const user = JSON.parse(localStorage.getItem("loggedUser"));
@@ -208,28 +85,6 @@
       saveSchedule(schedule);
       renderSchedule();
     }
-    function changePassword() {
-    const oldPass = document.getElementById("oldPass").value;
-    const newPass = document.getElementById("newPass").value;
-  
-    if (!oldPass || !newPass) return alert("Plotëso të dy fjalëkalimet");
-  
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const index = users.findIndex(u => u.username === user.username && u.password === oldPass);
-  
-    if (index === -1) return alert("Fjalëkalimi i vjetër nuk është i saktë");
-  
-    users[index].password = newPass;
-    localStorage.setItem("users", JSON.stringify(users));
-  
-    // Përditëso edhe user-in e loguar aktual
-    localStorage.setItem("loggedUser", JSON.stringify(users[index]));
-  
-    alert("Fjalëkalimi u ndryshua me sukses!");
-    document.getElementById("oldPass").value = "";
-    document.getElementById("newPass").value = "";
-  }
-
 
     function renderSchedule() {
       const list = document.getElementById("scheduleList");
@@ -241,123 +96,6 @@
 
     renderStudents();
     renderSchedule();
-    function renderAllStudents() {
-  const students = getStudents().filter(s => s.trainer === user.username);
-  const container = document.getElementById("allStudents");
-  container.innerHTML = "";
-
-  students.forEach((s, i) => {
-    container.innerHTML += `
-      <div>
-        <strong>${s.name}</strong>
-        <button onclick="sendMessage('${s.name}')">Dërgo Mesazh</button>
-        <button onclick="deleteStudent(${i})">Fshij</button>
-      </div>
-    `;
-  });
-}
-
-function sendMessage(studentName) {
-  const msg = prompt(`Shkruaj mesazhin për ${studentName}:`);
-  if (!msg) return;
-
-  const messages = JSON.parse(localStorage.getItem("messages")) || [];
-  messages.push({
-    to: studentName,
-    from: user.username,
-    text: msg,
-    date: new Date().toLocaleString()
-  });
-  localStorage.setItem("messages", JSON.stringify(messages));
-  alert("Mesazhi u dërgua!");
-}
-
-function deleteStudent(index) {
-  let students = getStudents().filter(s => s.trainer === user.username);
-  const allStudents = getStudents();
-  const studentToRemove = students[index];
-  const updated = allStudents.filter(s => s.name !== studentToRemove.name);
-  saveStudents(updated);
-  renderStudents();
-  renderAllStudents();
-}
- function renderAdminPanel() {
-  const allUsers = JSON.parse(localStorage.getItem("users")) || [];
-  const allStudents = JSON.parse(localStorage.getItem("students")) || [];
-  const messages = JSON.parse(localStorage.getItem("messages")) || [];
-
-  const usersHTML = `
-    <h3>Trajnerët & Nxënësit</h3>
-    ${allUsers.map(u => `<p><strong>${u.username}</strong> (${u.role})</p>`).join("")}
-    <h4>Studentët (me trajner)</h4>
-    ${allStudents.map(s => `<p>${s.name} → ${s.trainer}</p>`).join("")}
-  `;
-
-  const messagesHTML = messages.length === 0 ? "<p>S'ka mesazhe</p>" :
-    messages.map(m =>
-      `<div><strong>${m.from} → ${m.to}:</strong> ${m.text} <em>(${m.date})</em></div>`
-    ).join("");
-
-  document.getElementById("adminUsersList").innerHTML = usersHTML;
-  document.getElementById("adminMessages").innerHTML = messagesHTML;
-}
-
-renderAdminPanel();
-    function registerStudent() {
-      const name = document.getElementById("newStudentName").value;
-      const username = document.getElementById("newStudentUsername").value;
-      const password = document.getElementById("newStudentPassword").value;
-    
-      if (!name || !username || !password) {
-        return alert("Ju lutem plotësoni të gjitha fushat.");
-      }
-    
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-      const students = JSON.parse(localStorage.getItem("students")) || [];
-    
-      if (users.find(u => u.username === username)) {
-        return alert("Ky username është në përdorim!");
-      }
-    
-      const newUser = {
-        username,
-        password,
-        role: "student"
-      };
-    
-      const newStudent = {
-        name,
-        username,
-        trainer: user.username
-      };
-    
-      users.push(newUser);
-      students.push(newStudent);
-    
-      localStorage.setItem("users", JSON.stringify(users));
-      localStorage.setItem("students", JSON.stringify(students));
-    
-      alert("Nxënësi u regjistrua me sukses!");
-      document.getElementById("newStudentName").value = "";
-      document.getElementById("newStudentUsername").value = "";
-      document.getElementById("newStudentPassword").value = "";
-    
-      renderStudents(); // përditëso listën e studentëve
-    }
-
-   
-
   </script>
-  <!-- Pjesa e re e ADMINIT -->
-<div class="box">
-  <h2>👤 Përdoruesit</h2>
-  <div id="adminUsersList"></div>
-</div>
-
-<div class="box">
-  <h2>💬 Të gjitha Mesazhet</h2>
-  <div id="adminMessages"></div>
-</div>
-
 </body>
 </html>
