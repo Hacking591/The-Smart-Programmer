@@ -1,12 +1,12 @@
-<!-- login.html -->
+<!-- register.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login - The Smart Programmer</title>
+  <title>Regjistrohu - The Smart Programmer</title>
   <style>
-    body { font-family: Arial; background: #d0f0ff; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    .login-box {
+    body { font-family: Arial; background: #e8f8f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .register-box {
       background: white;
       padding: 30px;
       border-radius: 12px;
@@ -21,32 +21,32 @@
       border-radius: 8px;
     }
     button {
-      background: #007BFF;
+      background: #28a745;
       color: white;
       cursor: pointer;
       font-weight: bold;
     }
     button:hover {
-      background: #0056b3;
+      background: #1e7e34;
     }
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h2>🔐 Hyr në Platformë</h2>
+  <div class="register-box">
+    <h2>📝 Regjistrohu</h2>
     <input type="text" id="username" placeholder="Emri i përdoruesit" required>
     <input type="password" id="password" placeholder="Fjalëkalimi" required>
+    
     <select id="role">
-      <option value="trainer">Trajner</option>
       <option value="student">Student</option>
+      <option value="trainer">Trajner</option>
     </select>
-    <button onclick="login()">Hyr</button>
-  </div>
-  <button onclick="redirectToRegister()">Regjistrohu</button>
 
+    <button onclick="register()">Regjistrohu</button>
+  </div>
 
   <script>
-    function login() {
+    function register() {
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value;
       const role = document.getElementById("role").value;
@@ -55,30 +55,17 @@
         alert("Ju lutem plotësoni të gjitha fushat.");
         return;
       }
-      function redirectToRegister() {
-        window.location.href = "register.html";
+
+      const key = role + "_" + username;
+
+      if (localStorage.getItem(key)) {
+        alert("Ky përdorues ekziston tashmë!");
+        return;
       }
 
-      if (role === "trainer") {
-        const trainerPass = localStorage.getItem("trainer_password") || "admin";
-        if (username === "admin" && password === trainerPass) {
-          alert("Hyrja si Trajner u realizua me sukses!");
-          window.location.href = "trainer.html";
-        } else {
-          alert("Kredenciale të pasakta për trajner.");
-        }
-      }
-
-      if (role === "student") {
-        const studentPass = localStorage.getItem("student_" + username);
-        if (studentPass && studentPass === password) {
-          localStorage.setItem("current_student", username); // e ruajmë studentin aktiv
-          alert("Hyrja si Student u realizua me sukses!");
-          window.location.href = "student.html";
-        } else {
-          alert("Kredenciale të pasakta për student.");
-        }
-      }
+      localStorage.setItem(key, password);
+      alert("Regjistrimi u krye me sukses si " + role + "!");
+      window.location.href = "login.html";
     }
   </script>
 </body>
