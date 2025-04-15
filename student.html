@@ -102,5 +102,25 @@
       }
     }
   </script>
+  <script>
+    function ngarkoMesazhet() {
+      const studenti = localStorage.getItem("current_student");
+    
+      fetch(`merr_mesazhet.php?studenti=${studenti}`)
+        .then(res => res.json())
+        .then(data => {
+          const lista = document.getElementById("lista-mesazheve");
+          lista.innerHTML = "";
+          data.forEach(msg => {
+            const li = document.createElement("li");
+            li.textContent = `📨 Nga ${msg.nga}: ${msg.mesazh}`;
+            lista.appendChild(li);
+          });
+        });
+    }
+
+window.onload = ngarkoMesazhet;
+</script>
+
 </body>
 </html>
