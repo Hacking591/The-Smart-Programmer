@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button, select { margin: 5px 0; padding: 7px; }
+  </style>
+</head>
+<body>
+  <h1>Hyr ose Regjistrohu</h1>
+
+  <div>
+    <select id="role">
+      <option value="student">Nxënës</option>
+      <option value="trainer">Trajner</option>
+    </select><br>
+    <input type="text" id="username" placeholder="Username" /><br>
+    <input type="password" id="password" placeholder="Password" /><br>
+
+    <button onclick="login()">Hyr</button>
+    <button onclick="register()">Regjistrohu</button>
+  </div>
+
+  <script>
+    function getUsers() {
+      return JSON.parse(localStorage.getItem("users")) || [];
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    function register() {
+      const role = document.getElementById("role").value;
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) return alert("Plotëso të gjitha fushat");
+
+      const users = getUsers();
+      if (users.find(u => u.username === username)) {
+        return alert("Ky username ekziston!");
+      }
+
+      users.push({ username, password, role });
+      saveUsers(users);
+      alert("Regjistrimi u krye me sukses!");
+    }
+
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const users = getUsers();
+
+      const user = users.find(u => u.username === username && u.password === password);
+      if (!user) return alert("Username ose password i gabuar!");
+
+      localStorage.setItem("loggedUser", JSON.stringify(user));
+
+      if (user.role === "trainer") {
+        window.location.href = "trainer.html";
+      } else {
+        window.location.href = "student.html";
+      }
+    }
+  </script>
+</body>
+</html>
