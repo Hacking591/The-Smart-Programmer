@@ -4,188 +4,67 @@
   <meta charset="UTF-8">
   <title>Login</title>
   <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #e0f7fa, #ffffff);
-      color: #333;
-      margin: 0;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
-    h1 {
-      color: #0077b6;
-      margin-bottom: 20px;
-    }
-    .role-selection {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-    .role-button {
-      background-color: #00b4d8;
-      color: white;
-      border: none;
-      padding: 15px 25px;
-      border-radius: 10px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    .role-button:hover {
-      background-color: #0077b6;
-      transform: scale(1.05);
-    }
-    .active-role {
-      background-color: #0077b6 !important;
-    }
-    input, button {
-      width: 100%;
-      max-width: 350px;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-    input {
-      border: 1px solid #ccc;
-      background-color: #f9f9f9;
-      transition: 0.3s ease;
-    }
-    input:focus {
-      border-color: #00b4d8;
-      outline: none;
-      background-color: #fff;
-    }
-    button {
-      background-color: #00b4d8;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    button:hover {
-      background-color: #0077b6;
-      transform: scale(1.05);
-    }
-    .form-box {
-      background-color: #ffffffcc;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      padding: 30px;
-      width: 100%;
-      max-width: 400px;
-      display: none;
-    }
+    body { font-family: Arial; padding: 20px; }
+    input, button, select { margin: 5px 0; padding: 7px; }
   </style>
 </head>
 <body>
-  <h1>Zgjidh rolin për të hyrë</h1>
+  <h1>Hyr ose Regjistrohu</h1>
 
-  <div class="role-selection">
-    <button class="role-button" id="studentBtn">Nxënës</button>
-    <button class="role-button" id="trainerBtn">Trajner</button>
-  </div>
-
-  <div class="form-box" id="form-box">
+  <div>
+    <select id="role">
+      <option value="student">Nxënës</option>
+      <option value="trainer">Trajner</option>
+    </select><br>
     <input type="text" id="username" placeholder="Username" /><br>
     <input type="password" id="password" placeholder="Password" /><br>
+
     <button onclick="login()">Hyr</button>
     <button onclick="register()">Regjistrohu</button>
   </div>
 
   <script>
-    let selectedRole = null;
-
-    function selectRole(role, event) {
-      selectedRole = role;
-      console.log("Roli i zgjedhur:", selectedRole); // <-- Shto këtë
-    
-      document.getElementById("form-box").style.display = "block";
-    
-      document.querySelectorAll('.role-button').forEach(btn => {
-        btn.classList.remove('active-role');
-      });
-      event.target.classList.add('active-role');
-    }
-    
-
-    function login() {
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-    
-      if (!selectedRole) {
-        alert("Ju lutem zgjidhni rolin përpara se të hyni!");
-        return;
-      }
-    
-      const formData = new FormData();
-      formData.append("action", "login");
-      formData.append("username", username);
-      formData.append("password", password);
-      formData.append("role", selectedRole);
-    
-      console.log("Po dërgohet:", username, password, selectedRole); // <-- Kontrollo
-    
-      fetch("login.php", {
-        method: "POST",
-        body: formData
-      })
-      .then(res => res.text())
-      .then(data => {
-        console.log("Përgjigje nga serveri:", data); // <-- Kontrollo
-    
-        if (data === "Gabim") {
-          alert("Username ose password i gabuar");
-        } else {
-          const user = JSON.parse(data);
-          localStorage.setItem("loggedUser", JSON.stringify(user));
-          window.location.href = user.role === "trainer" ? "trainer.html" : "student.html";
-        }
-      })
-      .catch(error => console.error("Gabim gjatë login:", error));
+    function getUsers() {
+      return JSON.parse(localStorage.getItem("users")) || [];
     }
 
+    function saveUsers(users) {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
 
     function register() {
-      const username = document.getElementById("username").value;
+      const role = document.getElementById("role").value;
+      const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value;
 
-      if (!selectedRole) {
-        alert("Ju lutem zgjidhni rolin përpara se të regjistroheni!");
-        return;
+      if (!username || !password) return alert("Plotëso të gjitha fushat");
+
+      const users = getUsers();
+      if (users.find(u => u.username === username)) {
+        return alert("Ky username ekziston!");
       }
 
-      const formData = new FormData();
-      formData.append("action", "register");
-      formData.append("username", username);
-      formData.append("password", password);
-      formData.append("role", selectedRole);
-
-      fetch("login.php", {
-        method: "POST",
-        body: formData
-      })
-      .then(res => res.text())
-      .then(data => {
-        if (data === "Ekziston") {
-          alert("Ky username ekziston!");
-        } else {
-          alert("Regjistrimi me sukses! Tani hyr.");
-        }
-      });
+      users.push({ username, password, role });
+      saveUsers(users);
+      alert("Regjistrimi u krye me sukses!");
     }
-    document.getElementById("studentBtn").addEventListener("click", function(e) {
-    selectRole('student', e);
-  });
-  document.getElementById("trainerBtn").addEventListener("click", function(e) {
-    selectRole('trainer', e);
-  });
 
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const users = getUsers();
+
+      const user = users.find(u => u.username === username && u.password === password);
+      if (!user) return alert("Username ose password i gabuar!");
+
+      localStorage.setItem("loggedUser", JSON.stringify(user));
+
+      if (user.role === "trainer") {
+        window.location.href = "trainer.html";
+      } else {
+        window.location.href = "student.html";
+      }
+    }
   </script>
 </body>
 </html>
