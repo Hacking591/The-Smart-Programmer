@@ -17,6 +17,7 @@
     <ul>
       <li>E marte - 15:00 deri 16:00</li>
     </ul>
+    
 
     <h3>🔒 Ndrysho Fjalëkalimin</h3>
     <input id="new-password-student" type="password" placeholder="Fjalëkalimi i ri">
@@ -71,6 +72,26 @@
         alert("Ju lutem shkruani një mesazh.");
         return;
       }
+      localStorage.setItem("current_student", username);
+      function shfaqMesazhetStudenteve() {
+        const lista = document.getElementById("lista-mesazheve");
+        lista.innerHTML = "";
+        const mesazhet = JSON.parse(localStorage.getItem("mesazhet_e_studenteve") || "[]");
+        console.log("Mesazhet nga studentët:", mesazhet); // <- kjo do të ndihmojë
+      
+        if (mesazhet.length === 0) {
+          lista.innerHTML = "<li>Nuk ka asnjë mesazh.</li>";
+          return;
+        }
+      
+        mesazhet.forEach(m => {
+          const li = document.createElement("li");
+          li.textContent = `📨 ${m.nga}: ${m.mesazh}`;
+          lista.appendChild(li);
+        });
+      }
+
+
 
       if (username) {
         localStorage.setItem("mesazh_nga_" + username, mesazhi);
