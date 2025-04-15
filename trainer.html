@@ -210,5 +210,24 @@ window.onload = function () {
     }
 
   </script>
+  <script>
+    function dergoMesazhTeStudenti() {
+      const nga = "trajner"; // ose emri i trajnerit
+      const per = document.getElementById("studenti-per-mesazh").value;
+      const mesazh = document.getElementById("mesazhi-studentit").value;
+    
+      fetch("dergo_mesazh.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `nga=${encodeURIComponent(nga)}&per=${encodeURIComponent(per)}&mesazh=${encodeURIComponent(mesazh)}`
+      })
+      .then(res => res.text())
+      .then(data => {
+        alert(data);
+        document.getElementById("mesazhi-studentit").value = "";
+      });
+    }
+  </script>
+
 </body>
 </html>
