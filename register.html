@@ -13,7 +13,7 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       width: 300px;
     }
-    input, button {
+    input, select, button {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
@@ -33,9 +33,15 @@
 </head>
 <body>
   <div class="register-box">
-    <h2>📝 Regjistrohu si Student</h2>
+    <h2>📝 Regjistrohu</h2>
     <input type="text" id="username" placeholder="Emri i përdoruesit" required>
     <input type="password" id="password" placeholder="Fjalëkalimi" required>
+    
+    <select id="role">
+      <option value="student">Student</option>
+      <option value="trainer">Trajner</option>
+    </select>
+
     <button onclick="register()">Regjistrohu</button>
   </div>
 
@@ -43,19 +49,22 @@
     function register() {
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value;
+      const role = document.getElementById("role").value;
 
       if (!username || !password) {
         alert("Ju lutem plotësoni të gjitha fushat.");
         return;
       }
 
-      if (localStorage.getItem("student_" + username)) {
+      const key = role + "_" + username;
+
+      if (localStorage.getItem(key)) {
         alert("Ky përdorues ekziston tashmë!");
         return;
       }
 
-      localStorage.setItem("student_" + username, password);
-      alert("Regjistrimi u krye me sukses!");
+      localStorage.setItem(key, password);
+      alert("Regjistrimi u krye me sukses si " + role + "!");
       window.location.href = "login.html";
     }
   </script>
