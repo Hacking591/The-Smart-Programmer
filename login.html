@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <title>Login</title>
   <style>
+    /* Style për faqen */
     body { font-family: Arial; padding: 20px; }
     input, button, select { margin: 5px 0; padding: 7px; }
-    <style>
+    
     /* Reset & Font */
     * {
       margin: 0;
@@ -78,24 +79,18 @@
       background: #a18cd1;
       transform: scale(1.05);
     }
-    
-    /* Messages & content */
-    #messageBox div, #allMessages div {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px 15px;
+
+    /* Mesazhi për gabim - kredencialet e pavlefshme */
+    #invalidCredentials {
+      background: rgba(255, 0, 0, 0.5);
+      color: #fff;
+      padding: 10px 20px;
       border-radius: 10px;
-      margin-bottom: 10px;
+      margin-top: 20px;
+      text-align: center;
+      display: none; /* Fillimisht fshehur */
     }
-    
-    strong {
-      color: #ffeb3b;
-    }
-    
-    em {
-      color: #ccc;
-      font-size: 13px;
-    }
-    
+
     /* Responsive tweaks */
     @media (max-width: 600px) {
       .container, .box {
@@ -107,12 +102,10 @@
         margin-bottom: 10px;
       }
     }
-</style>
-
   </style>
 </head>
 <body>
-<div class="container">
+  <div class="container">
     <h2>Hyr në Platformë</h2>
 
     <!-- Dropdown për zgjedhjen e rolit -->
@@ -127,6 +120,9 @@
     
     <!-- Butoni për login -->
     <button onclick="login()">Hyr</button>
+
+    <!-- Div për mesazhin e gabimit -->
+    <div id="invalidCredentials">Kredencialet janë të pavlefshme. Ju lutem provoni përsëri.</div>
   </div>
 
   <script>
@@ -150,7 +146,8 @@
 
       // Nëse nuk ka përdorues të regjistruar, tregoj një mesazh gabimi
       if (!user) {
-        alert("Të dhënat janë gabim ose përdoruesi nuk është regjistruar!");
+        // Shfaq mesazhin e gabimit
+        document.getElementById("invalidCredentials").style.display = "block";
         return;
       }
 
@@ -193,55 +190,6 @@
       localStorage.setItem("users", JSON.stringify(users));
 
       alert("Regjistrimi u krye me sukses!");
-    }
-  </script>
-</body>
-</html>
-
-</body>
-</html>
-
-  <script>
-    function getUsers() {
-      return JSON.parse(localStorage.getItem("users")) || [];
-    }
-
-    function saveUsers(users) {
-      localStorage.setItem("users", JSON.stringify(users));
-    }
-
-    function register() {
-      const role = document.getElementById("role").value;
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value;
-
-      if (!username || !password) return alert("Plotëso të gjitha fushat");
-
-      const users = getUsers();
-      if (users.find(u => u.username === username)) {
-        return alert("Ky username ekziston!");
-      }
-
-      users.push({ username, password, role });
-      saveUsers(users);
-      alert("Regjistrimi u krye me sukses!");
-    }
-
-    function login() {
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value;
-      const users = getUsers();
-
-      const user = users.find(u => u.username === username && u.password === password);
-      if (!user) return alert("Username ose password i gabuar!");
-
-      localStorage.setItem("loggedUser", JSON.stringify(user));
-
-      if (user.role === "trainer") {
-        window.location.href = "trainer.html";
-      } else {
-        window.location.href = "student.html";
-      }
     }
   </script>
 </body>
