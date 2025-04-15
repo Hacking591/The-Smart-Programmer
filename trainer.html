@@ -38,6 +38,10 @@
     <h3>🔒 Ndrysho Fjalëkalimin</h3>
     <input id="new-password-trainer" type="password" placeholder="Fjalëkalimi i ri">
     <button onclick="ndryshoPasswordTrainer()">Ndrysho</button>
+    <h3>📨 Dërgo Mesazh Trajnerit</h3>
+    <input id="mesazh-per-trajnerin" placeholder="Shkruaj mesazh">
+    <button onclick="dergoMesazhTrajnerit()">Dërgo</button>
+
 
     <h3>💬 Komunikim me Studentët</h3>
     <input id="mesazh" placeholder="Shkruaj mesazh">
@@ -97,17 +101,17 @@
       alert('Studenti u regjistrua!');
     }
     function mbushDropdownStudente() {
-  const dropdown = document.getElementById("student-list");
-  dropdown.innerHTML = "";
-  for (let key in localStorage) {
-    if (key.startsWith("student_")) {
-      const studentName = key.replace("student_", "");
-      const option = document.createElement("option");
-      option.value = studentName;
-      option.text = studentName;
-      dropdown.appendChild(option);
-    }
-  }
+      const dropdown = document.getElementById("student-list");
+      dropdown.innerHTML = "";
+      for (let key in localStorage) {
+        if (key.startsWith("student_")) {
+          const studentName = key.replace("student_", "");
+          const option = document.createElement("option");
+          option.value = studentName;
+          option.text = studentName;
+          dropdown.appendChild(option);
+        }
+      }
 }
 
 function ndryshoTrajnerin() {
@@ -140,6 +144,23 @@ window.onload = function () {
       localStorage.setItem('mesazhi_trajnerit', msg);
       alert('Mesazhi u dërgua te studentët!');
     }
+    function dergoMesazhTrajnerit() {
+      const username = localStorage.getItem("current_student") || "student_anonim";
+      const mesazhi = document.getElementById("mesazh-per-trajnerin").value.trim();
+    
+      if (!mesazhi) {
+        alert("Ju lutem shkruani një mesazh.");
+        return;
+      }
+    
+      let lista = JSON.parse(localStorage.getItem("mesazhet_e_studenteve") || "[]");
+      lista.push({ nga: username, mesazh: mesazhi });
+      localStorage.setItem("mesazhet_e_studenteve", JSON.stringify(lista));
+    
+      document.getElementById("mesazh-per-trajnerin").value = "";
+      alert("Mesazhi u dërgua!");
+    }
+
 
     // Thirrja kryesore për të ngarkuar oraret
     window.onload = ngarkoOraret;
