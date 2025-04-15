@@ -1,0 +1,10 @@
+CREATE DATABASE komunikimi;
+USE komunikimi;
+
+CREATE TABLE mesazhet (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nga VARCHAR(50),
+  per VARCHAR(50),
+  mesazh TEXT,
+  data_dhenies TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
