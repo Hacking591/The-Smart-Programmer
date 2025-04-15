@@ -30,6 +30,32 @@
     <textarea id="studentMessage" rows="3" placeholder="Shkruaj mesazhin këtu..."></textarea><br>
     <button onclick="sendMessageToTrainer()">Dërgo</button>
   </div>
+  <h2>Mesazh për Trajnerin</h2>
+  <textarea id="studentMessage" placeholder="Shkruaj mesazhin këtu..."></textarea><br>
+  <button onclick="sendMessage()">Dërgo Mesazh</button>
+
+  <script>
+    function sendMessage() {
+      const message = document.getElementById("studentMessage").value.trim();
+      if (!message) {
+        alert("Ju lutem shkruani një mesazh.");
+        return;
+      }
+
+      const messages = JSON.parse(localStorage.getItem("trainerMessages")) || [];
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+      messages.push({
+        from: user.username,
+        text: message,
+        timestamp: new Date().toLocaleString()
+      });
+
+      localStorage.setItem("trainerMessages", JSON.stringify(messages));
+      alert("Mesazhi u dërgua!");
+      document.getElementById("studentMessage").value = "";
+    }
+  </script>
 
 
 
