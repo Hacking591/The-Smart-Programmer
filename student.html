@@ -25,6 +25,12 @@
     <h3>Mesazhet nga trajneri</h3>
     <div id="messageBox"></div>
   </div>
+  <div class="box">
+    <h3>Dërgo Mesazh Tek Trajneri</h3>
+    <textarea id="studentMessage" rows="3" placeholder="Shkruaj mesazhin këtu..."></textarea><br>
+    <button onclick="sendMessageToTrainer()">Dërgo</button>
+  </div>
+
 
 
   <script>
@@ -70,6 +76,39 @@
     document.getElementById("oldPass").value = "";
     document.getElementById("newPass").value = "";
   }
+    function renderMessages() {
+    const messages = JSON.parse(localStorage.getItem("messages")) || [];
+    const box = document.getElementById("messageBox");
+  
+    const userMessages = messages.filter(m => m.to === user.username);
+    if (userMessages.length === 0) {
+      box.innerHTML = "<p>Nuk ka mesazhe.</p>";
+      return;
+    }
+  
+    box.innerHTML = userMessages.map(m =>
+      `<div><strong>${m.from}:</strong> ${m.text} <em>(${m.date})</em></div>`
+    ).join("");
+  }
+  
+  renderMessages();
+    function sendMessageToTrainer() {
+    const msg = document.getElementById("studentMessage").value;
+    if (!msg) return alert("Shkruaj një mesazh.");
+  
+    const messages = JSON.parse(localStorage.getItem("messages")) || [];
+    messages.push({
+      to: user.trainer,
+      from: user.username,
+      text: msg,
+      date: new Date().toLocaleString()
+    });
+    localStorage.setItem("messages", JSON.stringify(messages));
+    alert("Mesazhi u dërgua!");
+    document.getElementById("studentMessage").value = "";
+  }
+
+
 
   </script>
   <div class="box">
