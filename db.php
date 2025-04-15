@@ -1,13 +1,11 @@
 <?php
-$host = "localhost";
-$db = "smart_programmer";
-$user = "root"; // vendos emrin e përdoruesit të MySQL
-$pass = ""; // vendos fjalëkalimin
+$host = "sqlXXX.epizy.com"; // vendos hostin e databazës nga InfinityFree
+$user = "epiz_12345678";    // përdoruesi yt
+$pass = "password";         // fjalëkalimi
+$db = "epiz_12345678_smartdb"; // databaza
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Lidhja me databazën dështoi: " . $e->getMessage());
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn->connect_error) {
+  die("Lidhja dështoi: " . $conn->connect_error);
 }
 ?>
