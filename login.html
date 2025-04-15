@@ -4,73 +4,60 @@
   <meta charset="UTF-8">
   <title>Login</title>
   <style>
-    * {
-      box-sizing: border-box;
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #ffffff);
+      color: #333;
+      margin: 0;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
-
-      body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #e0f7fa, #ffffff);
-        color: #333;
-        margin: 0;
-        padding: 30px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-      }
-  
-      h1 {
-        color: #0077b6;
-        margin-bottom: 20px;
-      }
-  
-      select, input {
-        width: 100%;
-        max-width: 350px;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 16px;
-        background-color: #f9f9f9;
-        transition: 0.3s ease;
-      }
-  
-      input:focus, select:focus {
-        border-color: #00b4d8;
-        outline: none;
-        background-color: #fff;
-      }
-  
-      button {
-        background-color: #00b4d8;
-        color: white;
-        padding: 10px 18px;
-        margin-top: 10px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        width: 100%;
-        max-width: 350px;
-      }
-  
-      button:hover {
-        background-color: #0077b6;
-        transform: scale(1.05);
-      }
-  
-      div {
-        background-color: #ffffffcc;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        padding: 30px;
-        width: 100%;
-        max-width: 400px;
-      }
+    h1 {
+      color: #0077b6;
+      margin-bottom: 20px;
+    }
+    select, input, button {
+      width: 100%;
+      max-width: 350px;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input, select {
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      transition: 0.3s ease;
+    }
+    input:focus, select:focus {
+      border-color: #00b4d8;
+      outline: none;
+      background-color: #fff;
+    }
+    button {
+      background-color: #00b4d8;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+      background-color: #0077b6;
+      transform: scale(1.05);
+    }
+    div {
+      background-color: #ffffffcc;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 400px;
+    }
   </style>
 </head>
 <body>
@@ -85,136 +72,60 @@
     <input type="password" id="password" placeholder="Password" /><br>
 
     <button onclick="login()">Hyr</button>
+    <button onclick="register()">Regjistrohu</button>
   </div>
 
   <script>
-    function getUsers() {
-      return JSON.parse(localStorage.getItem("users")) || [];
-    }
+    function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const role = document.getElementById("role").value;
 
-    function saveUsers(users) {
-      localStorage.setItem("users", JSON.stringify(users));
+      const formData = new FormData();
+      formData.append("action", "login");
+      formData.append("username", username);
+      formData.append("password", password);
+      formData.append("role", role);
+
+      fetch("login.php", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.text())
+      .then(data => {
+        if (data === "Gabim") {
+          alert("Username ose password i gabuar");
+        } else {
+          const user = JSON.parse(data);
+          window.location.href = user.role === "trainer" ? "trainer.html" : "student.html";
+        }
+      });
     }
 
     function register() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
       const role = document.getElementById("role").value;
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value;
 
-      if (!username || !password) return alert("Plotëso të gjitha fushat");
+      const formData = new FormData();
+      formData.append("action", "register");
+      formData.append("username", username);
+      formData.append("password", password);
+      formData.append("role", role);
 
-      const users = getUsers();
-      if (users.find(u => u.username === username)) {
-        return alert("Ky username ekziston!");
-      }
-
-      users.push({ username, password, role });
-      saveUsers(users);
-      alert("Regjistrimi u krye me sukses!");
-    }
-
-    function login() {
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value;
-      const users = getUsers();
-
-      const user = users.find(u => u.username === username && u.password === password);
-      if (!user) return alert("Username ose password i gabuar!");
-
-      localStorage.setItem("loggedUser", JSON.stringify(user));
-
-      if (user.role === "trainer") {
-        window.location.href = "trainer.html";
-      } else {
-        window.location.href = "student.html";
-      }
-    }
-  </script>
-  <script>
-    function login() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    const role = document.getElementById("role").value;
-  
-    const formData = new FormData();
-    formData.append("action", "login");
-    formData.append("username", username);
-    formData.append("password", password);
-    formData.append("role", role);
-  
-    fetch("login.php", {
-      method: "POST",
-      body: formData
-    })
-    .then(res => res.text())
-    .then(data => {
-      if (data === "Gabim") {
-        alert("Username ose password i gabuar");
-      } else {
-        const user = JSON.parse(data);
-        localStorage.setItem("loggedUser", JSON.stringify(user));
-        window.location.href = user.role === "trainer" ? "trainer.html" : "student.html";
-      }
-    });
-  }
-  
-  function register() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    const role = document.getElementById("role").value;
-  
-    const formData = new FormData();
-    formData.append("action", "register");
-    formData.append("username", username);
-    formData.append("password", password);
-    formData.append("role", role);
-  
-    fetch("login.php", {
-      method: "POST",
-      body: formData
-    })
-    .then(res => res.text())
-    .then(data => {
-      if (data === "Ekziston") {
-        alert("Ky username ekziston!");
-      } else {
-        alert("Regjistrimi me sukses! Tani hyni.");
-      }
-    });
-  }
-  </script>
-  <script>
-    // Funksioni i login për kontrollimin e kredencialeve
-    function login() {
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value;
-      const role = document.getElementById("role").value; // Merr rolin nga dropdown
-
-      // Username dhe Password hardkoduar në JS për testim
-      const correctUsername = "Gert Lula";  // Username i hardkoduar
-      const correctPassword = "Acc3ss@trajner";   // Password i hardkoduar
-
-      const correctUsername = "Danjal Fusha";  // Username i hardkoduar
-      const correctPassword = "1234";   // Password i hardkoduar
-
-      // Kontrollo kredencialet
-      if (username === correctUsername && password === correctPassword) {
-        alert("Login i suksesshëm!");
-
-        // Ruaj rolin e përdoruesit në localStorage
-        localStorage.setItem("role", role); 
-
-        // Redirect te faqja përkatëse
-        if (role === "trainer") {
-          window.location.href = "trainer.html";  // Përdoruesi është trajner
+      fetch("login.php", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.text())
+      .then(data => {
+        if (data === "Ekziston") {
+          alert("Ky username ekziston!");
         } else {
-          window.location.href = "student.html";  // Përdoruesi është nxënës
+          alert("Regjistrimi me sukses! Tani hyr.");
         }
-      } else {
-        alert("Kredenciale të pasakta!");
-      }
+      });
     }
   </script>
-
 </body>
 </html>
