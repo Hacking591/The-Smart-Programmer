@@ -63,6 +63,15 @@
           alert("Kredenciale të pasakta për trajner.");
         }
       }
+      if (role === "trainer") {
+        const trainerPass = localStorage.getItem("trainer_" + username);
+        if (trainerPass && trainerPass === password) {
+          alert("Hyrja si Trajner u realizua me sukses!");
+          window.location.href = "trainer.html";
+        } else {
+          alert("Kredenciale të pasakta për trajner.");
+        }
+      }
 
       if (role === "student") {
         const studentPass = localStorage.getItem("student_" + username);
