@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <title>Portali i Trajnerit</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, select, button { margin: 5px 0; padding: 7px; }
+    .box { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Portali i Trajnerit</h1>
+  <p id="trainerWelcome"></p>
+  <button onclick="logout()">Dil</button>
+
+  <div class="box">
+    <h2>Regjistro Student</h2>
+    <input type="text" id="studentName" placeholder="Emri i Studentit" />
+    <button onclick="registerStudent()">Regjistro</button>
+    <div id="studentList"></div>
+  </div>
+
+  <div class="box">
+    <h2>Shto Orar Mësimi</h2>
+    <input type="text" id="lessonDay" placeholder="Dita (p.sh. E Hënë)" />
+    <input type="text" id="lessonTime" placeholder="Ora (p.sh. 17:00)" />
+    <input type="text" id="lessonTopic" placeholder="Tema" />
+    <button onclick="addSchedule()">Shto</button>
+    <div id="scheduleList"></div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("loggedUser"));
+    if (!user || user.role !== "trainer") {
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("trainerWelcome").innerText = `Mirësevjen, ${user.username}`;
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedUser");
+      window.location.href = "login.html";
+    }
+
+    function getStudents() {
+      return JSON.parse(localStorage.getItem("students")) || [];
+    }
+
+    function saveStudents(students) {
+      localStorage.setItem("students", JSON.stringify(students));
+    }
+
+    function registerStudent() {
+      const name = document.getElementById("studentName").value.trim();
+      if (!name) return alert("Shkruaj emrin e studentit");
+      const students = getStudents();
+      students.push({ name, trainer: user.username });
+      saveStudents(students);
+      renderStudents();
+      document.getElementById("studentName").value = "";
+    }
+
+    function renderStudents() {
+      const list = document.getElementById("studentList");
+      const students = getStudents().filter(s => s.trainer === user.username);
+      list.innerHTML = students.map(s => `<div>${s.name}</div>`).join("");
+    }
+
+    function getSchedule() {
+      return JSON.parse(localStorage.getItem("schedule")) || [];
+    }
+
+    function saveSchedule(schedule) {
+      localStorage.setItem("schedule", JSON.stringify(schedule));
+    }
+
+    function addSchedule() {
+      const day = document.getElementById("lessonDay").value.trim();
+      const time = document.getElementById("lessonTime").value.trim();
+      const topic = document.getElementById("lessonTopic").value.trim();
+      if (!day || !time || !topic) return alert("Plotëso të gjitha fushat");
+      const schedule = getSchedule();
+      schedule.push({ day, time, topic, trainer: user.username });
+      saveSchedule(schedule);
+      renderSchedule();
+    }
+
+    function renderSchedule() {
+      const list = document.getElementById("scheduleList");
+      const schedule = getSchedule().filter(s => s.trainer === user.username);
+      list.innerHTML = schedule.map(s =>
+        `<div>${s.day} - ${s.time} - Tema: ${s.topic}</div>`
+      ).join("");
+    }
+
+    renderStudents();
+    renderSchedule();
+  </script>
+</body>
+</html>
