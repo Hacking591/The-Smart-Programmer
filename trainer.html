@@ -1,108 +1,108 @@
+<!-- trainer.html -->
 <!DOCTYPE html>
-<html lang="sq">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Portali i Trajnerit</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    input, select, button { margin: 5px 0; padding: 7px; }
-    .box { margin-bottom: 20px; }
+    body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+    .container { background: white; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto; }
+    input, button, select { margin-top: 10px; padding: 10px; width: 100%; }
+    ul { list-style-type: none; padding: 0; }
+    li { background: #eee; padding: 10px; margin-top: 5px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
+    .actions button { margin-left: 5px; }
   </style>
 </head>
 <body>
-  <h1>Portali i Trajnerit</h1>
-  <p id="trainerWelcome"></p>
-  <button onclick="logout()">Dil</button>
+  <div class="container">
+    <h2>Portali i Trajnerit</h2>
 
-  <div class="box">
-    <h2>Regjistro Student</h2>
-    <input type="text" id="studentName" placeholder="Emri i Studentit" />
-    <button onclick="registerStudent()">Regjistro</button>
-    <div id="studentList"></div>
-  </div>
+    <h3>📅 Orari i Kursit</h3>
+    <input id="input-orar" placeholder="Shkruaj orarin, p.sh: E enjte - 17:00">
+    <button onclick="shtoOrar()">Shto Orar</button>
+    <ul id="orari-list"></ul>
 
-  <div class="box">
-    <h2>Shto Orar Mësimi</h2>
-    <input type="text" id="lessonDay" placeholder="Dita (p.sh. E Hënë)" />
-    <input type="text" id="lessonTime" placeholder="Ora (p.sh. 17:00)" />
-    <input type="text" id="lessonTopic" placeholder="Tema" />
-    <button onclick="addSchedule()">Shto</button>
-    <div id="scheduleList"></div>
+    <h3>➕ Regjistro Student</h3>
+    <input id="new-username" placeholder="Username i studentit">
+    <input id="new-password" type="password" placeholder="Password">
+    <button onclick="regjistroStudent()">Regjistro</button>
+
+    <h3>🔒 Ndrysho Fjalëkalimin</h3>
+    <input id="new-password-trainer" type="password" placeholder="Fjalëkalimi i ri">
+    <button onclick="ndryshoPasswordTrainer()">Ndrysho</button>
+
+    <h3>💬 Komunikim me Studentët</h3>
+    <input id="mesazh" placeholder="Shkruaj mesazh">
+    <button onclick="dergoMesazh()">Dërgo</button>
   </div>
 
   <script>
-    const user = JSON.parse(localStorage.getItem("loggedUser"));
-    if (!user || user.role !== "trainer") {
-      window.location.href = "login.html";
-    } else {
-      document.getElementById("trainerWelcome").innerText = `Mirësevjen, ${user.username}`;
+    // Ngarko oraret nga localStorage
+    function ngarkoOraret() {
+      const lista = document.getElementById('orari-list');
+      lista.innerHTML = "";
+      const oraret = JSON.parse(localStorage.getItem('oraret') || "[]");
+
+      oraret.forEach((orar, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${orar}</span>
+          <div class="actions">
+            <button onclick="editoOrar(${index})">✏️</button>
+            <button onclick="fshiOrar(${index})">🗑️</button>
+          </div>`;
+        lista.appendChild(li);
+      });
     }
 
-    function logout() {
-      localStorage.removeItem("loggedUser");
-      window.location.href = "login.html";
+    function shtoOrar() {
+      const orar = document.getElementById('input-orar').value;
+      if (!orar) return;
+      const oraret = JSON.parse(localStorage.getItem('oraret') || "[]");
+      oraret.push(orar);
+      localStorage.setItem('oraret', JSON.stringify(oraret));
+      document.getElementById('input-orar').value = "";
+      ngarkoOraret();
     }
 
-    function getStudents() {
-      return JSON.parse(localStorage.getItem("students")) || [];
+    function fshiOrar(index) {
+      const oraret = JSON.parse(localStorage.getItem('oraret') || "[]");
+      oraret.splice(index, 1);
+      localStorage.setItem('oraret', JSON.stringify(oraret));
+      ngarkoOraret();
     }
 
-    function saveStudents(students) {
-      localStorage.setItem("students", JSON.stringify(students));
+    function editoOrar(index) {
+      const oraret = JSON.parse(localStorage.getItem('oraret') || "[]");
+      const orariRi = prompt("Shkruaj orarin e ri:", oraret[index]);
+      if (orariRi) {
+        oraret[index] = orariRi;
+        localStorage.setItem('oraret', JSON.stringify(oraret));
+        ngarkoOraret();
+      }
     }
 
-    function registerStudent() {
-      const name = document.getElementById("studentName").value.trim();
-      if (!name) return alert("Shkruaj emrin e studentit");
-      const students = getStudents();
-      students.push({ name, trainer: user.username });
-      saveStudents(students);
-      renderStudents();
-      document.getElementById("studentName").value = "";
+    function regjistroStudent() {
+      const username = document.getElementById('new-username').value;
+      const password = document.getElementById('new-password').value;
+      localStorage.setItem('student_' + username, password);
+      alert('Studenti u regjistrua!');
     }
 
-    function renderStudents() {
-      const list = document.getElementById("studentList");
-      const students = getStudents().filter(s => s.trainer === user.username);
-      list.innerHTML = students.map(s => `<div>${s.name}</div>`).join("");
+    function ndryshoPasswordTrainer() {
+      const newPass = document.getElementById('new-password-trainer').value;
+      localStorage.setItem('trainer_password', newPass);
+      alert('Fjalëkalimi i trajnerit u ndryshua!');
     }
 
-    function getSchedule() {
-      return JSON.parse(localStorage.getItem("schedule")) || [];
+    function dergoMesazh() {
+      const msg = document.getElementById('mesazh').value;
+      localStorage.setItem('mesazhi_trajnerit', msg);
+      alert('Mesazhi u dërgua te studentët!');
     }
 
-    function saveSchedule(schedule) {
-      localStorage.setItem("schedule", JSON.stringify(schedule));
-    }
-
-    function addSchedule() {
-      const day = document.getElementById("lessonDay").value.trim();
-      const time = document.getElementById("lessonTime").value.trim();
-      const topic = document.getElementById("lessonTopic").value.trim();
-      if (!day || !time || !topic) return alert("Plotëso të gjitha fushat");
-      const schedule = getSchedule();
-      schedule.push({ day, time, topic, trainer: user.username });
-      saveSchedule(schedule);
-      renderSchedule();
-    }
-
-    function renderSchedule() {
-      const list = document.getElementById("scheduleList");
-      const schedule = getSchedule().filter(s => s.trainer === user.username);
-      list.innerHTML = schedule.map(s =>
-        `<div>${s.day} - ${s.time} - Tema: ${s.topic}</div>`
-      ).join("");
-    }
-
-    renderStudents();
-    renderSchedule();
+    // Thirrja kryesore për të ngarkuar oraret
+    window.onload = ngarkoOraret;
   </script>
-  <div class="box">
-    <h3>Ndrysho Fjalëkalimin</h3>
-    <input type="password" id="oldPass" placeholder="Fjalëkalimi i vjetër" /><br>
-    <input type="password" id="newPass" placeholder="Fjalëkalimi i ri" /><br>
-    <button onclick="changePassword()">Ndrysho</button>
-  </div>
-
 </body>
 </html>
