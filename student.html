@@ -1,56 +1,48 @@
+<!-- student.html -->
 <!DOCTYPE html>
-<html lang="sq">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Portali i Nxënësit</title>
+  <title>Portali i Studentit</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    .box { margin-bottom: 20px; }
+    body { font-family: Arial; padding: 20px; background: #e0f7ff; }
+    .container { background: white; padding: 20px; border-radius: 10px; }
+    input, button { margin-top: 10px; padding: 10px; width: 100%; }
   </style>
 </head>
 <body>
-  <h1>Portali i Nxënësit</h1>
-  <p id="studentWelcome"></p>
-  <button onclick="logout()">Dil</button>
+  <div class="container">
+    <h2>Portali i Studentit</h2>
 
-  <div class="box">
-    <h3>Trajneri yt: <span id="trainerName"></span></h3>
-  </div>
+    <h3>📅 Orari i Kursit</h3>
+    <ul>
+      <li>E hënë - 16:00</li>
+      <li>E mërkurë - 16:00</li>
+    </ul>
 
-  <div class="box">
-    <h3>Orari i Mësimeve</h3>
-    <div id="scheduleList"></div>
+    <h3>🔒 Ndrysho Fjalëkalimin</h3>
+    <input id="new-password-student" type="password" placeholder="Fjalëkalimi i ri">
+    <button onclick="ndryshoPasswordStudent()">Ndrysho</button>
+
+    <h3>💬 Mesazh nga Trajneri</h3>
+    <p id="mesazhi"></p>
+
+    <h3>👨‍🏫 Trajneri</h3>
+    <p>Emri: <strong>Mentor Kodrra</strong></p>
   </div>
 
   <script>
-    const user = JSON.parse(localStorage.getItem("loggedUser"));
-    if (!user || user.role !== "student") {
-      window.location.href = "login.html";
-    } else {
-      document.getElementById("studentWelcome").innerText = `Mirësevjen, ${user.username}`;
+    window.onload = function () {
+      const mesazh = localStorage.getItem('mesazhi_trajnerit') || 'Asnjë mesazh.';
+      document.getElementById('mesazhi').innerText = mesazh;
     }
 
-    function logout() {
-      localStorage.removeItem("loggedUser");
-      window.location.href = "login.html";
+    function ndryshoPasswordStudent() {
+      const pass = document.getElementById('new-password-student').value;
+      // Kjo është thjesht simulim, normalisht duhet të dijë cili student jeni
+      localStorage.setItem('student_demo', pass);
+      alert('Fjalëkalimi u ndryshua!');
     }
-
-    const students = JSON.parse(localStorage.getItem("students")) || [];
-    const current = students.find(s => s.name === user.username);
-    document.getElementById("trainerName").innerText = current ? current.trainer : "Pa trajner";
-
-    const schedule = JSON.parse(localStorage.getItem("schedule")) || [];
-    const filtered = current ? schedule.filter(s => s.trainer === current.trainer) : [];
-    document.getElementById("scheduleList").innerHTML = filtered.map(s =>
-      `<div>${s.day} - ${s.time} - Tema: ${s.topic}</div>`
-    ).join("");
   </script>
-  <div class="box">
-    <h3>Ndrysho Fjalëkalimin</h3>
-    <input type="password" id="oldPass" placeholder="Fjalëkalimi i vjetër" /><br>
-    <input type="password" id="newPass" placeholder="Fjalëkalimi i ri" /><br>
-    <button onclick="changePassword()">Ndrysho</button>
-  </div>
-
 </body>
 </html>
