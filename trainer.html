@@ -303,6 +303,48 @@ function deleteStudent(index) {
 }
 
 renderAdminPanel();
+    function registerStudent() {
+      const name = document.getElementById("newStudentName").value;
+      const username = document.getElementById("newStudentUsername").value;
+      const password = document.getElementById("newStudentPassword").value;
+    
+      if (!name || !username || !password) {
+        return alert("Ju lutem plotësoni të gjitha fushat.");
+      }
+    
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const students = JSON.parse(localStorage.getItem("students")) || [];
+    
+      if (users.find(u => u.username === username)) {
+        return alert("Ky username është në përdorim!");
+      }
+    
+      const newUser = {
+        username,
+        password,
+        role: "student"
+      };
+    
+      const newStudent = {
+        name,
+        username,
+        trainer: user.username
+      };
+    
+      users.push(newUser);
+      students.push(newStudent);
+    
+      localStorage.setItem("users", JSON.stringify(users));
+      localStorage.setItem("students", JSON.stringify(students));
+    
+      alert("Nxënësi u regjistrua me sukses!");
+      document.getElementById("newStudentName").value = "";
+      document.getElementById("newStudentUsername").value = "";
+      document.getElementById("newStudentPassword").value = "";
+    
+      renderStudents(); // përditëso listën e studentëve
+    }
+
    
 
   </script>
