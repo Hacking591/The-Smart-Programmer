@@ -221,23 +221,28 @@ window.onload = function () {
 
   </script>
   <script>
-    function dergoMesazhTeStudenti() {
-      const nga = "trajner"; // ose emri i trajnerit
-      const per = document.getElementById("studenti-per-mesazh").value;
-      const mesazh = document.getElementById("mesazhi-studentit").value;
+    function dergoMesazh() {
+      const mesazhi = document.getElementById("mesazhi").value;
     
-      fetch("dergo_mesazh.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `nga=${encodeURIComponent(nga)}&per=${encodeURIComponent(per)}&mesazh=${encodeURIComponent(mesazh)}`
+      fetch('http://<IP_E_SERVERIT_TEND>:3000/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sender: 'trainer1',
+          receiver: 'student1',
+          message: mesazhi
+        })
       })
-      .then(res => res.text())
+      .then(res => res.json())
       .then(data => {
-        alert(data);
-        document.getElementById("mesazhi-studentit").value = "";
+        alert("Mesazhi u dërgua me sukses!");
       });
     }
-  </script>
+</script>
+
+<!-- Shembull input për trajnerin -->
+<textarea id="mesazhi" placeholder="Shkruaj mesazhin këtu..."></textarea>
+<button onclick="dergoMesazh()">Dërgo Mesazh</button>
 
 </body>
 </html>
