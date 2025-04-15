@@ -87,8 +87,8 @@
   <h1>Zgjidh rolin për të hyrë</h1>
 
   <div class="role-selection">
-    <button class="role-button" onclick="selectRole('student', event)">Nxënës</button>
-    <button class="role-button" onclick="selectRole('trainer', event)">Trajner</button>
+    <button class="role-button" id="studentBtn">Nxënës</button>
+    <button class="role-button" id="trainerBtn">Trajner</button>
   </div>
 
   <div class="form-box" id="form-box">
@@ -102,40 +102,43 @@
     let selectedRole = null;
 
     function selectRole(role, event) {
-    selectedRole = role;
-  
-    // Trego formularin
-    document.getElementById("form-box").style.display = "block";
-  
-    // Ngjyros butonat
-    document.querySelectorAll('.role-button').forEach(btn => {
-      btn.classList.remove('active-role');
-    });
-    event.target.classList.add('active-role');
-  }
-
+      selectedRole = role;
+      console.log("Roli i zgjedhur:", selectedRole); // <-- Shto këtë
+    
+      document.getElementById("form-box").style.display = "block";
+    
+      document.querySelectorAll('.role-button').forEach(btn => {
+        btn.classList.remove('active-role');
+      });
+      event.target.classList.add('active-role');
+    }
+    
 
     function login() {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
-
+    
       if (!selectedRole) {
         alert("Ju lutem zgjidhni rolin përpara se të hyni!");
         return;
       }
-
+    
       const formData = new FormData();
       formData.append("action", "login");
       formData.append("username", username);
       formData.append("password", password);
       formData.append("role", selectedRole);
-
+    
+      console.log("Po dërgohet:", username, password, selectedRole); // <-- Kontrollo
+    
       fetch("login.php", {
         method: "POST",
         body: formData
       })
       .then(res => res.text())
       .then(data => {
+        console.log("Përgjigje nga serveri:", data); // <-- Kontrollo
+    
         if (data === "Gabim") {
           alert("Username ose password i gabuar");
         } else {
@@ -143,8 +146,10 @@
           localStorage.setItem("loggedUser", JSON.stringify(user));
           window.location.href = user.role === "trainer" ? "trainer.html" : "student.html";
         }
-      });
+      })
+      .catch(error => console.error("Gabim gjatë login:", error));
     }
+
 
     function register() {
       const username = document.getElementById("username").value;
@@ -174,6 +179,13 @@
         }
       });
     }
+    document.getElementById("studentBtn").addEventListener("click", function(e) {
+    selectRole('student', e);
+  });
+  document.getElementById("trainerBtn").addEventListener("click", function(e) {
+    selectRole('trainer', e);
+  });
+
   </script>
 </body>
 </html>
