@@ -87,8 +87,8 @@
   <h1>Zgjidh rolin për të hyrë</h1>
 
   <div class="role-selection">
-    <button class="role-button" onclick="selectRole('student')">Nxënës</button>
-    <button class="role-button" onclick="selectRole('trainer')">Trajner</button>
+    <button class="role-button" onclick="selectRole('student', event)">Nxënës</button>
+    <button class="role-button" onclick="selectRole('trainer', event)">Trajner</button>
   </div>
 
   <div class="form-box" id="form-box">
@@ -101,18 +101,19 @@
   <script>
     let selectedRole = null;
 
-    function selectRole(role) {
-      selectedRole = role;
+    function selectRole(role, event) {
+    selectedRole = role;
+  
+    // Trego formularin
+    document.getElementById("form-box").style.display = "block";
+  
+    // Ngjyros butonat
+    document.querySelectorAll('.role-button').forEach(btn => {
+      btn.classList.remove('active-role');
+    });
+    event.target.classList.add('active-role');
+  }
 
-      // Trego formularin
-      document.getElementById("form-box").style.display = "block";
-
-      // Ngjyros butonat
-      document.querySelectorAll('.role-button').forEach(btn => {
-        btn.classList.remove('active-role');
-      });
-      event.target.classList.add('active-role');
-    }
 
     function login() {
       const username = document.getElementById("username").value;
