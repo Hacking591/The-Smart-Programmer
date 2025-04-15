@@ -4,228 +4,67 @@
   <meta charset="UTF-8">
   <title>Login</title>
   <style>
-    /* Style për faqen */
     body { font-family: Arial; padding: 20px; }
     input, button, select { margin: 5px 0; padding: 7px; }
-    
-    /* Reset & Font */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", sans-serif;
-    }
-    
-    body {
-      background: linear-gradient(to right, #1f1c2c, #928dab);
-      color: #fff;
-      min-height: 100vh;
-      padding: 40px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    /* Container style */
-    .container, .box {
-      background: rgba(255, 255, 255, 0.07);
-      border-radius: 20px;
-      padding: 30px;
-      margin: 15px 0;
-      width: 90%;
-      max-width: 600px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-    }
-    
-    h1, h2, h3, h4 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #f0eaff;
-    }
-    
-    /* Input styles */
-    input, textarea, select {
-      width: 100%;
-      padding: 10px 15px;
-      margin: 10px 0 20px;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-      font-size: 16px;
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      box-shadow: inset 0 0 5px rgba(255,255,255,0.2);
-    }
-    
-    textarea {
-      resize: vertical;
-    }
-    
-    /* Buttons */
-    button {
-      background: #6a82fb;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-right: 10px;
-    }
-    
-    button:hover {
-      background: #a18cd1;
-      transform: scale(1.05);
-    }
-
-    /* Mesazhi për gabim - kredencialet e pavlefshme */
-    #invalidCredentials {
-      background: rgba(255, 0, 0, 0.5);
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-      text-align: center;
-      display: none; /* Fillimisht fshehur */
-    }
-
-    /* Responsive tweaks */
-    @media (max-width: 600px) {
-      .container, .box {
-        padding: 20px;
-      }
-    
-      button {
-        width: 100%;
-        margin-bottom: 10px;
-      }
-    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Hyr në Platformë</h2>
+  <h1>Hyr ose Regjistrohu</h1>
 
-    <!-- Dropdown për zgjedhjen e rolit -->
-    <select id="loginRole">
+  <div>
+    <select id="role">
       <option value="student">Nxënës</option>
       <option value="trainer">Trajner</option>
-    </select>
+    </select><br>
+    <input type="text" id="username" placeholder="Username" /><br>
+    <input type="password" id="password" placeholder="Password" /><br>
 
-    <!-- Input për Username dhe Password -->
-    <input type="text" id="loginUsername" placeholder="Username" onkeydown="if(event.key === 'Enter') login()">
-    <input type="password" id="loginPassword" placeholder="Password" onkeydown="if(event.key === 'Enter') login()">
-    
-    <!-- Butoni për login -->
     <button onclick="login()">Hyr</button>
-
-    <!-- Div për mesazhin e gabimit -->
-    <div id="invalidCredentials">Kredencialet janë të pavlefshme. Ju lutem provoni përsëri.</div>
+    <button onclick="register()">Regjistrohu</button>
   </div>
 
   <script>
-    // Funksioni për login
-      function login() {
-      const username = document.getElementById("loginUsername").value;
-      const password = document.getElementById("loginPassword").value;
-      const role = document.getElementById("loginRole").value;
+    function getUsers() {
+      return JSON.parse(localStorage.getItem("users")) || [];
+    }
 
-      // Kontrollo që të dyja fushat të jenë të plota
-      if (!username || !password) {
-        alert("Ju lutem plotësoni username dhe password!");
-        return;
+    function saveUsers(users) {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    function register() {
+      const role = document.getElementById("role").value;
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) return alert("Plotëso të gjitha fushat");
+
+      const users = getUsers();
+      if (users.find(u => u.username === username)) {
+        return alert("Ky username ekziston!");
       }
 
-      // Merr të dhënat e përdoruesve nga localStorage
-      const users = JSON.parse(localStorage.getItem("users")) || [];
+      users.push({ username, password, role });
+      saveUsers(users);
+      alert("Regjistrimi u krye me sukses!");
+    }
 
-      // Kontrollo përdoruesin dhe rolin
-      const user = users.find(u => u.username === username && u.password === password && u.role === role);
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const users = getUsers();
 
-      // Nëse nuk ka përdorues të regjistruar, tregoj një mesazh gabimi
-      if (!user) {
-        // Shfaq mesazhin e gabimit
-        document.getElementById("invalidCredentials").style.display = "block";
-        return;
-      }
+      const user = users.find(u => u.username === username && u.password === password);
+      if (!user) return alert("Username ose password i gabuar!");
 
-      // Regjistro përdoruesin si të lidhur në localStorage
-      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      localStorage.setItem("loggedUser", JSON.stringify(user));
 
-      // Dërgo përdoruesin në faqen përkatëse bazuar në rolin
-      if (role === "trainer") {
+      if (user.role === "trainer") {
         window.location.href = "trainer.html";
       } else {
         window.location.href = "student.html";
       }
     }
-
-    // Funksioni për regjistrimin e përdoruesit (për ndihmë)
-      function registerUser() {
-      const username = document.getElementById("loginUsername").value;
-      const password = document.getElementById("loginPassword").value;
-      const role = document.getElementById("loginRole").value;
-
-      if (!username || !password) {
-        alert("Ju lutem plotësoni të dhënat e kërkuara!");
-        return;
-      }
-
-      // Merr përdoruesit ekzistues nga localStorage
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-
-      // Kontrollo nëse përdoruesi është regjistruar
-      const userExists = users.some(u => u.username === username);
-      if (userExists) {
-        alert("Ky përdorues ekziston tashmë!");
-        return;
-      }
-
-      // Shto përdorues të ri në listën e përdoruesve
-      users.push({ username, password, role });
-
-      // Ruaj përdoruesit në localStorage
-      localStorage.setItem("users", JSON.stringify(users));
-
-      alert("Regjistrimi u krye me sukses!");
-    }
-    function login() {
-    const username = document.getElementById("loginUsername").value;
-    const password = document.getElementById("loginPassword").value;
-    const role = document.getElementById("loginRole").value;
-  
-    // Kontrollo që të dyja fushat të jenë të plota
-    if (!username || !password) {
-      alert("Ju lutem plotësoni username dhe password!");
-      return;
-    }
-  
-    // Merr të dhënat e përdoruesve nga localStorage
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-  
-    // Kontrollo përdoruesin dhe rolin
-    const user = users.find(u => u.username === username && u.password === password && u.role === role);
-  
-    // Nëse nuk ka përdorues të regjistruar, tregoj një mesazh gabimi
-    if (!user) {
-      // Shfaq mesazhin e gabimit
-      document.getElementById("invalidCredentials").style.display = "block";
-      return;
-    }
-  
-    // Regjistro përdoruesin si të lidhur në localStorage
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
-  
-    // Dërgo përdoruesin në faqen përkatëse bazuar në rolin
-    if (role === "trainer") {
-      window.location.href = "trainer.html"; // Sigurohu që kjo faqe ekziston
-    } else if (role === "student") {
-      window.location.href = "student.html"; // Sigurohu që kjo faqe ekziston
-    }
-  }
-
   </script>
 </body>
 </html>
