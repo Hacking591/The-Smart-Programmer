@@ -41,6 +41,28 @@
       localStorage.removeItem("loggedUser");
       window.location.href = "login.html";
     }
+    function changePassword() {
+    const oldPass = document.getElementById("oldPass").value;
+    const newPass = document.getElementById("newPass").value;
+  
+    if (!oldPass || !newPass) return alert("Plotëso të dy fjalëkalimet");
+  
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const index = users.findIndex(u => u.username === user.username && u.password === oldPass);
+  
+    if (index === -1) return alert("Fjalëkalimi i vjetër nuk është i saktë");
+  
+    users[index].password = newPass;
+    localStorage.setItem("users", JSON.stringify(users));
+  
+    // Përditëso edhe user-in e loguar aktual
+    localStorage.setItem("loggedUser", JSON.stringify(users[index]));
+  
+    alert("Fjalëkalimi u ndryshua me sukses!");
+    document.getElementById("oldPass").value = "";
+    document.getElementById("newPass").value = "";
+  }
+
 
     const students = JSON.parse(localStorage.getItem("students")) || [];
     const current = students.find(s => s.name === user.username);
