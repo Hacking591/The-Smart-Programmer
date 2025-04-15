@@ -34,8 +34,8 @@
 <body>
   <div class="login-box">
     <h2>🔐 Hyr në Platformë</h2>
-    <input type="text" id="username" placeholder="Emri i përdoruesit" required>
-    <input type="password" id="password" placeholder="Fjalëkalimi" required>
+    <input type="text" id="usernameBox" placeholder="Emri i përdoruesit" required>
+    <input type="password" id="passwordBox" placeholder="Fjalëkalimi" required>
     <select id="role">
       <option value="trainer">Trajner</option>
       <option value="student">Student</option>
@@ -86,5 +86,22 @@
       }
     }
   </script>
+  <script>
+  function checkPassword() {
+   var password = document.getElementById("passwordBox");
+   var passwordText = password.value;
+   var username = document.getElementById("usernamebox");
+   var usernameText = username.value;
+   if(passwordText == "Acc3ss@trajner") {
+    return true;
+   }
+   alert("Access denied! Incorrect password!");
+   return false;
+   }
+    if(usernameText == "Gert Lula") {
+      return true;
+    }
+    alert("Access denided! Incorrect password!")
+ </script>
 </body>
 </html>
