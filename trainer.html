@@ -162,6 +162,29 @@ function deleteStudent(index) {
   renderStudents();
   renderAllStudents();
 }
+    function renderAdminPanel() {
+    const allUsers = JSON.parse(localStorage.getItem("users")) || [];
+    const allStudents = JSON.parse(localStorage.getItem("students")) || [];
+    const messages = JSON.parse(localStorage.getItem("messages")) || [];
+  
+    const usersHTML = `
+      <h3>Trajnerët & Nxënësit</h3>
+      ${allUsers.map(u => `<p><strong>${u.username}</strong> (${u.role})</p>`).join("")}
+      <h4>Studentët (me trajner)</h4>
+      ${allStudents.map(s => `<p>${s.name} → ${s.trainer}</p>`).join("")}
+    `;
+  
+    const messagesHTML = messages.length === 0 ? "<p>S'ka mesazhe</p>" :
+      messages.map(m =>
+        `<div><strong>${m.from} → ${m.to}:</strong> ${m.text} <em>(${m.date})</em></div>`
+      ).join("");
+  
+    document.getElementById("adminUsersList").innerHTML = usersHTML;
+    document.getElementById("adminMessages").innerHTML = messagesHTML;
+  }
+  
+  renderAdminPanel();
+
 
 
   </script>
@@ -171,6 +194,17 @@ function deleteStudent(index) {
     <input type="password" id="newPass" placeholder="Fjalëkalimi i ri" /><br>
     <button onclick="changePassword()">Ndrysho</button>
   </div>
+  <!-- Pjesa e re e ADMINIT -->
+<div class="box">
+  <h2>👤 Përdoruesit</h2>
+  <div id="adminUsersList"></div>
+</div>
+
+<div class="box">
+  <h2>💬 Të gjitha Mesazhet</h2>
+  <div id="adminMessages"></div>
+</div>
+
 
 </body>
 </html>
