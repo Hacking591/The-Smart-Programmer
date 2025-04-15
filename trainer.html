@@ -41,6 +41,9 @@
     <h3>📨 Dërgo Mesazh Trajnerit</h3>
     <input id="mesazh-per-trajnerin" placeholder="Shkruaj mesazh">
     <button onclick="dergoMesazhTrajnerit()">Dërgo</button>
+    <h3>📥 Mesazhet nga Studentët</h3>
+    <ul id="lista-mesazheve"></ul>
+
 
 
     <h3>💬 Komunikim me Studentët</h3>
@@ -144,6 +147,23 @@ window.onload = function () {
       localStorage.setItem('mesazhi_trajnerit', msg);
       alert('Mesazhi u dërgua te studentët!');
     }
+    function shfaqMesazhetStudenteve() {
+      const lista = document.getElementById("lista-mesazheve");
+      lista.innerHTML = "";
+      const mesazhet = JSON.parse(localStorage.getItem("mesazhet_e_studenteve") || "[]");
+    
+      if (mesazhet.length === 0) {
+        lista.innerHTML = "<li>Nuk ka asnjë mesazh.</li>";
+        return;
+      }
+
+  mesazhet.forEach(m => {
+    const li = document.createElement("li");
+    li.textContent = `📨 ${m.nga}: ${m.mesazh}`;
+    lista.appendChild(li);
+  });
+}
+
     function dergoMesazhTrajnerit() {
       const username = localStorage.getItem("current_student") || "student_anonim";
       const mesazhi = document.getElementById("mesazh-per-trajnerin").value.trim();
@@ -188,6 +208,8 @@ window.onload = function () {
     window.onload = function() {
       ngarkoOraret();
       shfaqStatusStudentesh();
+      shfaqMesazhetStudenteve();
+
     }
 
   </script>
