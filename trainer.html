@@ -21,6 +21,9 @@
     <input id="input-orar" placeholder="Shkruaj orarin, p.sh: E enjte - 17:00">
     <button onclick="shtoOrar()">Shto Orar</button>
     <ul id="orari-list"></ul>
+    <h3>👥 Studentët dhe Statusi</h3>
+    <ul id="lista-studenteve-status"></ul>
+
 
     <h3>➕ Regjistro Student</h3>
     <input id="new-username" placeholder="Username i studentit">
@@ -103,6 +106,32 @@
 
     // Thirrja kryesore për të ngarkuar oraret
     window.onload = ngarkoOraret;
+    function shfaqStatusStudentesh() {
+      const lista = document.getElementById("lista-studenteve-status");
+      lista.innerHTML = "";
+    
+      for (let key in localStorage) {
+        if (key.startsWith("student_")) {
+          const username = key.replace("student_", "");
+          const status = localStorage.getItem("student_status_" + username) || "nuk ka zgjedhur";
+          const emoji = status === "online" ? "🟢"
+                      : status === "busy" ? "🟠"
+                      : status === "invisible" ? "⚫"
+                      : "❓";
+    
+          const li = document.createElement("li");
+          li.textContent = `${emoji} ${username} - ${status}`;
+          lista.appendChild(li);
+        }
+      }
+    }
+    
+    // Ngarko listën e statuseve kur hapet faqja
+    window.onload = function() {
+      ngarkoOraret();
+      shfaqStatusStudentesh();
+    }
+
   </script>
 </body>
 </html>
