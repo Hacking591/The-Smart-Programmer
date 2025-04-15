@@ -21,7 +21,29 @@
       color: #0077b6;
       margin-bottom: 20px;
     }
-    select, input, button {
+    .role-selection {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .role-button {
+      background-color: #00b4d8;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .role-button:hover {
+      background-color: #0077b6;
+      transform: scale(1.05);
+    }
+    .active-role {
+      background-color: #0077b6 !important;
+    }
+    input, button {
       width: 100%;
       max-width: 350px;
       padding: 10px;
@@ -29,12 +51,12 @@
       border-radius: 8px;
       font-size: 16px;
     }
-    input, select {
+    input {
       border: 1px solid #ccc;
       background-color: #f9f9f9;
       transition: 0.3s ease;
     }
-    input:focus, select:focus {
+    input:focus {
       border-color: #00b4d8;
       outline: none;
       background-color: #fff;
@@ -50,42 +72,62 @@
       background-color: #0077b6;
       transform: scale(1.05);
     }
-    div {
+    .form-box {
       background-color: #ffffffcc;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       padding: 30px;
       width: 100%;
       max-width: 400px;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>Hyr ose Regjistrohu</h1>
+  <h1>Zgjidh rolin për të hyrë</h1>
 
-  <div>
-    <select id="role">
-      <option value="student">Nxënës</option>
-      <option value="trainer">Trajner</option>
-    </select><br>
+  <div class="role-selection">
+    <button class="role-button" onclick="selectRole('student')">Nxënës</button>
+    <button class="role-button" onclick="selectRole('trainer')">Trajner</button>
+  </div>
+
+  <div class="form-box" id="form-box">
     <input type="text" id="username" placeholder="Username" /><br>
     <input type="password" id="password" placeholder="Password" /><br>
-
     <button onclick="login()">Hyr</button>
     <button onclick="register()">Regjistrohu</button>
   </div>
 
   <script>
+    let selectedRole = null;
+
+    function selectRole(role) {
+      selectedRole = role;
+
+      // Trego formularin
+      document.getElementById("form-box").style.display = "block";
+
+      // Ngjyros butonat
+      document.querySelectorAll('.role-button').forEach(btn => {
+        btn.classList.remove('active-role');
+      });
+      event.target.classList.add('active-role');
+    }
+
     function login() {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
-      const role = document.getElementById("role").value;
+
+      if (!selectedRole) {
+        alert("Ju lutem zgjidhni rolin përpara se të hyni!");
+        return;
+      }
 
       const formData = new FormData();
       formData.append("action", "login");
       formData.append("username", username);
       formData.append("password", password);
-      formData.append("role", role);
+      formData.append("role", selectedRole);
 
       fetch("login.php", {
         method: "POST",
@@ -97,6 +139,7 @@
           alert("Username ose password i gabuar");
         } else {
           const user = JSON.parse(data);
+          localStorage.setItem("loggedUser", JSON.stringify(user));
           window.location.href = user.role === "trainer" ? "trainer.html" : "student.html";
         }
       });
@@ -105,13 +148,17 @@
     function register() {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
-      const role = document.getElementById("role").value;
+
+      if (!selectedRole) {
+        alert("Ju lutem zgjidhni rolin përpara se të regjistroheni!");
+        return;
+      }
 
       const formData = new FormData();
       formData.append("action", "register");
       formData.append("username", username);
       formData.append("password", password);
-      formData.append("role", role);
+      formData.append("role", selectedRole);
 
       fetch("login.php", {
         method: "POST",
