@@ -112,9 +112,14 @@
   </style>
 </head>
 <body>
-  <body>
   <div class="container">
     <h2>Hyr në Platformë</h2>
+
+    <select id="loginRole">
+      <option value="student">Nxënës</option>
+      <option value="trainer">Trajner</option>
+    </select>
+
     <input type="text" id="loginUsername" placeholder="Username">
     <input type="password" id="loginPassword" placeholder="Password">
     <button onclick="login()">Hyr</button>
@@ -124,17 +129,28 @@
     function login() {
       const username = document.getElementById("loginUsername").value;
       const password = document.getElementById("loginPassword").value;
+      const role = document.getElementById("loginRole").value;
 
       const users = JSON.parse(localStorage.getItem("users")) || [];
-      const user = users.find(u => u.username === username && u.password === password);
 
-      if (!user) return alert("Username ose password gabim!");
+      const user = users.find(u => u.username === username && u.password === password && u.role === role);
+
+      if (!user) {
+        alert("Të dhënat janë gabim ose roli nuk përputhet!");
+        return;
+      }
 
       localStorage.setItem("loggedInUser", JSON.stringify(user));
-      window.location.href = user.role === "trainer" ? "trainer.html" : "student.html";
+
+      if (role === "trainer") {
+        window.location.href = "trainer.html";
+      } else {
+        window.location.href = "student.html";
+      }
     }
   </script>
 </body>
+</html>
 
   <script>
     function getUsers() {
