@@ -23,6 +23,13 @@
     <h3>🔒 Ndrysho Fjalëkalimin</h3>
     <input id="new-password-student" type="password" placeholder="Fjalëkalimi i ri">
     <button onclick="ndryshoPasswordStudent()">Ndrysho</button>
+    <h3>🟢 Statusi im</h3>
+    <select id="student-status" onchange="ndryshoStatusin()">
+      <option value="online">Online</option>
+      <option value="busy">Busy</option>
+      <option value="invisible">Invisible</option>
+    </select>
+
 
     <h3>💬 Mesazh nga Trajneri</h3>
     <p id="mesazhi"></p>
@@ -43,6 +50,12 @@
       localStorage.setItem('student_demo', pass);
       alert('Fjalëkalimi u ndryshua!');
     }
+    function ndryshoStatusin() {
+      const username = localStorage.getItem("current_student");
+      const status = document.getElementById("student-status").value;
+      localStorage.setItem("student_status_" + username, status);
+    }
+
   </script>
 </body>
 </html>
