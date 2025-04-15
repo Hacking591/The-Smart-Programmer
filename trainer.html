@@ -368,6 +368,19 @@ function deleteStudent(index) {
 
 
   </script>
+  <script>
+    // Kontrollo rolin në localStorage
+    const role = localStorage.getItem("role");
+    if (role !== "trainer") {
+      alert("Ju nuk keni lejen për të hyrë këtu!");
+      window.location.href = "login.html";  // Kthehu në login
+    }
+
+    function logout() {
+      alert("Keni dalë nga sistemi!");
+      window.location.href = "login.html";  // Kthehu në login
+    }
+  </script>
   <div class="box">
     <h3>Ndrysho Fjalëkalimin</h3>
     <input type="password" id="oldPass" placeholder="Fjalëkalimi i vjetër" /><br>
