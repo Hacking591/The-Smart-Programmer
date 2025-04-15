@@ -126,29 +126,34 @@
   </div>
 
   <script>
+    // Funksioni për login
     function login() {
       const username = document.getElementById("loginUsername").value;
       const password = document.getElementById("loginPassword").value;
       const role = document.getElementById("loginRole").value;
 
+      // Kontrollo që të dyja fushat të jenë të plota
       if (!username || !password) {
         alert("Ju lutem plotësoni username dhe password!");
         return;
       }
 
+      // Merr të dhënat e përdoruesve nga localStorage
       const users = JSON.parse(localStorage.getItem("users")) || [];
-      
+
       // Kontrollo përdoruesin dhe rolin
       const user = users.find(u => u.username === username && u.password === password && u.role === role);
 
+      // Nëse nuk ka përdorues të regjistruar, tregoj një mesazh gabimi
       if (!user) {
         alert("Të dhënat janë gabim ose përdoruesi nuk është regjistruar!");
         return;
       }
 
+      // Regjistro përdoruesin si të lidhur në localStorage
       localStorage.setItem("loggedInUser", JSON.stringify(user));
 
-      // Dërgo në faqen përkatëse
+      // Dërgo përdoruesin në faqen përkatëse bazuar në rolin
       if (role === "trainer") {
         window.location.href = "trainer.html";
       } else {
