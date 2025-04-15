@@ -120,8 +120,8 @@
       <option value="trainer">Trajner</option>
     </select>
 
-    <input type="text" id="loginUsername" placeholder="Username">
-    <input type="password" id="loginPassword" placeholder="Password">
+    <input type="text" id="loginUsername" placeholder="Username" onkeydown="if(event.key === 'Enter') login()">
+    <input type="password" id="loginPassword" placeholder="Password" onkeydown="if(event.key === 'Enter') login()">
     <button onclick="login()">Hyr</button>
   </div>
 
@@ -131,17 +131,24 @@
       const password = document.getElementById("loginPassword").value;
       const role = document.getElementById("loginRole").value;
 
-      const users = JSON.parse(localStorage.getItem("users")) || [];
+      if (!username || !password) {
+        alert("Ju lutem plotësoni username dhe password!");
+        return;
+      }
 
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      
+      // Kontrollo përdoruesin dhe rolin
       const user = users.find(u => u.username === username && u.password === password && u.role === role);
 
       if (!user) {
-        alert("Të dhënat janë gabim ose roli nuk përputhet!");
+        alert("Të dhënat janë gabim ose përdoruesi nuk është regjistruar!");
         return;
       }
 
       localStorage.setItem("loggedInUser", JSON.stringify(user));
 
+      // Dërgo në faqen përkatëse
       if (role === "trainer") {
         window.location.href = "trainer.html";
       } else {
@@ -149,6 +156,9 @@
       }
     }
   </script>
+</body>
+</html>
+
 </body>
 </html>
 
