@@ -112,16 +112,20 @@
   </style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
     <h2>Hyr në Platformë</h2>
 
+    <!-- Dropdown për zgjedhjen e rolit -->
     <select id="loginRole">
       <option value="student">Nxënës</option>
       <option value="trainer">Trajner</option>
     </select>
 
+    <!-- Input për Username dhe Password -->
     <input type="text" id="loginUsername" placeholder="Username" onkeydown="if(event.key === 'Enter') login()">
     <input type="password" id="loginPassword" placeholder="Password" onkeydown="if(event.key === 'Enter') login()">
+    
+    <!-- Butoni për login -->
     <button onclick="login()">Hyr</button>
   </div>
 
@@ -159,6 +163,36 @@
       } else {
         window.location.href = "student.html";
       }
+    }
+
+    // Funksioni për regjistrimin e përdoruesit (për ndihmë)
+    function registerUser() {
+      const username = document.getElementById("loginUsername").value;
+      const password = document.getElementById("loginPassword").value;
+      const role = document.getElementById("loginRole").value;
+
+      if (!username || !password) {
+        alert("Ju lutem plotësoni të dhënat e kërkuara!");
+        return;
+      }
+
+      // Merr përdoruesit ekzistues nga localStorage
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Kontrollo nëse përdoruesi është regjistruar
+      const userExists = users.some(u => u.username === username);
+      if (userExists) {
+        alert("Ky përdorues ekziston tashmë!");
+        return;
+      }
+
+      // Shto përdorues të ri në listën e përdoruesve
+      users.push({ username, password, role });
+
+      // Ruaj përdoruesit në localStorage
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("Regjistrimi u krye me sukses!");
     }
   </script>
 </body>
