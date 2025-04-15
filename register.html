@@ -1,0 +1,63 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Regjistrohu - The Smart Programmer</title>
+  <style>
+    body { font-family: Arial; background: #e8f8f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .register-box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      width: 300px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background: #28a745;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-box">
+    <h2>📝 Regjistrohu si Student</h2>
+    <input type="text" id="username" placeholder="Emri i përdoruesit" required>
+    <input type="password" id="password" placeholder="Fjalëkalimi" required>
+    <button onclick="register()">Regjistrohu</button>
+  </div>
+
+  <script>
+    function register() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) {
+        alert("Ju lutem plotësoni të gjitha fushat.");
+        return;
+      }
+
+      if (localStorage.getItem("student_" + username)) {
+        alert("Ky përdorues ekziston tashmë!");
+        return;
+      }
+
+      localStorage.setItem("student_" + username, password);
+      alert("Regjistrimi u krye me sukses!");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
