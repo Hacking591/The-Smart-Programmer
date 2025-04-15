@@ -103,24 +103,28 @@
     }
   </script>
   <script>
-    function ngarkoMesazhet() {
-      const studenti = localStorage.getItem("current_student");
-    
-      fetch(`merr_mesazhet.php?studenti=${studenti}`)
+    function merrMesazhet() {
+      fetch('http://<IP_E_SERVERIT_TEND>:3000/messages/student1')
         .then(res => res.json())
         .then(data => {
-          const lista = document.getElementById("lista-mesazheve");
-          lista.innerHTML = "";
+          const div = document.getElementById("mesazhet");
+          div.innerHTML = ""; // pastro para se të shtosh mesazhet
+    
           data.forEach(msg => {
-            const li = document.createElement("li");
-            li.textContent = `📨 Nga ${msg.nga}: ${msg.mesazh}`;
-            lista.appendChild(li);
+            const p = document.createElement("p");
+            p.innerText = `[${msg.sender}] ${msg.message}`;
+            div.appendChild(p);
           });
         });
     }
+    
+    // thirre automatikisht kur hap faqen
+    window.onload = merrMesazhet;
+  </script>
+    
+    <!-- Div ku shfaqen mesazhet -->
+    <div id="mesazhet"></div>
 
-window.onload = ngarkoMesazhet;
-</script>
 
 </body>
 </html>
