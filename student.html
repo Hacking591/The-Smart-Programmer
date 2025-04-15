@@ -78,6 +78,23 @@
     document.getElementById("scheduleList").innerHTML = filtered.map(s =>
       `<div>${s.day} - ${s.time} - Tema: ${s.topic}</div>`
     ).join("");
+    function renderMessages() {
+    const messages = JSON.parse(localStorage.getItem("messages")) || [];
+    const box = document.getElementById("messageBox");
+  
+    const userMessages = messages.filter(m => m.to === user.username);
+    if (userMessages.length === 0) {
+      box.innerHTML = "<p>Nuk ka mesazhe.</p>";
+      return;
+    }
+  
+    box.innerHTML = userMessages.map(m =>
+      `<div><strong>${m.from}:</strong> ${m.text} <em>(${m.date})</em></div>`
+    ).join("");
+  }
+  
+  renderMessages();
+
   </script>
 </body>
 </html>
