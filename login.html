@@ -130,5 +130,59 @@
       }
     }
   </script>
+  <script>
+    function login() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value;
+  
+    const formData = new FormData();
+    formData.append("action", "login");
+    formData.append("username", username);
+    formData.append("password", password);
+    formData.append("role", role);
+  
+    fetch("login.php", {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.text())
+    .then(data => {
+      if (data === "Gabim") {
+        alert("Username ose password i gabuar");
+      } else {
+        const user = JSON.parse(data);
+        localStorage.setItem("loggedUser", JSON.stringify(user));
+        window.location.href = user.role === "trainer" ? "trainer.html" : "student.html";
+      }
+    });
+  }
+  
+  function register() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value;
+  
+    const formData = new FormData();
+    formData.append("action", "register");
+    formData.append("username", username);
+    formData.append("password", password);
+    formData.append("role", role);
+  
+    fetch("login.php", {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.text())
+    .then(data => {
+      if (data === "Ekziston") {
+        alert("Ky username ekziston!");
+      } else {
+        alert("Regjistrimi me sukses! Tani hyni.");
+      }
+    });
+  }
+  </script>
+
 </body>
 </html>
