@@ -39,6 +39,8 @@
     <button onclick="sendMessageToStudent()">Dërgo</button>
 
   <script>
+    let editingIndex = -1;
+
     function registerStudent() {
     const name = document.getElementById("studentName").value.trim();
     const password = document.getElementById("studentPassword").value.trim();
@@ -125,15 +127,34 @@
     }
 
     function addSchedule() {
-      const day = document.getElementById("lessonDay").value.trim();
-      const time = document.getElementById("lessonTime").value.trim();
-      const topic = document.getElementById("lessonTopic").value.trim();
-      if (!day || !time || !topic) return alert("Plotëso të gjitha fushat");
-      const schedule = getSchedule();
-      schedule.push({ day, time, topic, trainer: user.username });
-      saveSchedule(schedule);
-      renderSchedule();
-    }
+    const day = document.getElementById("lessonDay").value.trim();
+    const time = document.getElementById("lessonTime").value.trim();
+    const topic = document.getElementById("lessonTopic").value.trim();
+    if (!day || !time || !topic) return alert("Plotëso të gjitha fushat");
+  
+    const allSchedule = getSchedule();
+    const trainerSchedule = allSchedule.filter(s => s.trainer === user.username);
+    const trainerIndices = allSchedule.reduce((arr, s, i) => {
+      if (s.trainer === user.username) arr.push(i);
+      return arr;
+    }, []);
+
+  if (editingIndex > -1) {
+    const actualIndex = trainerIndices[editingIndex];
+    allSchedule[actualIndex] = { day, time, topic, trainer: user.username };
+    editingIndex = -1;
+  } else {
+    allSchedule.push({ day, time, topic, trainer: user.username });
+  }
+
+  saveSchedule(allSchedule);
+  renderSchedule();
+
+  document.getElementById("lessonDay").value = "";
+  document.getElementById("lessonTime").value = "";
+  document.getElementById("lessonTopic").value = "";
+}
+
 
     function renderSchedule() {
       const list = document.getElementById("scheduleList");
@@ -167,20 +188,20 @@
     document.getElementById("newPass").value = "";
   }
     function renderAllStudents() {
-  const students = getStudents().filter(s => s.trainer === user.username);
-  const container = document.getElementById("allStudents");
-  container.innerHTML = "";
-
-  students.forEach((s, i) => {
-    container.innerHTML += `
-      <div>
-        <strong>${s.name}</strong>
-        <button onclick="sendMessage('${s.name}')">Dërgo Mesazh</button>
-        <button onclick="deleteStudent(${i})">Fshij</button>
-      </div>
-    `;
-  });
-}
+    const students = getStudents().filter(s => s.trainer === user.username);
+    const container = document.getElementById("allStudents");
+    container.innerHTML = "";
+  
+    students.forEach((s, i) => {
+      container.innerHTML += `
+        <div>
+          <strong>${s.name}</strong>
+          <button onclick="sendMessage('${s.name}')">Dërgo Mesazh</button>
+          <button onclick="deleteStudent(${i})">Fshij</button>
+        </div>
+      `;
+    });
+  }
 
 function sendMessage(studentName) {
   const msg = prompt(`Shkruaj mesazhin për ${studentName}:`);
@@ -228,6 +249,29 @@ function deleteStudent(index) {
   }
   
   renderAdminPanel();
+    function renderSchedule() {
+    const list = document.getElementById("scheduleList");
+    const schedule = getSchedule().filter(s => s.trainer === user.username);
+  
+    list.innerHTML = schedule.map((s, index) => `
+      <div>
+        ${s.day} - ${s.time} - Tema: ${s.topic}
+        <button onclick="editSchedule(${index})">Edito</button>
+      </div>
+    `).join("");
+  }
+    function editSchedule(index) {
+    const schedule = getSchedule().filter(s => s.trainer === user.username);
+    const item = schedule[index];
+    
+    document.getElementById("lessonDay").value = item.day;
+    document.getElementById("lessonTime").value = item.time;
+    document.getElementById("lessonTopic").value = item.topic;
+  
+    editingIndex = index;
+  }
+  
+
 
 
 
