@@ -23,6 +23,11 @@
     <ul id="orari-list"></ul>
     <h3>👥 Studentët dhe Statusi</h3>
     <ul id="lista-studenteve-status"></ul>
+    <h3>🔄 Ndrysho trajnerin e studentit</h3>
+    <select id="student-list"></select>
+    <input type="text" id="new-trainer-name" placeholder="Emri i ri i trajnerit">
+    <button onclick="ndryshoTrajnerin()">Ndrysho Trajnerin</button>
+
 
 
     <h3>➕ Regjistro Student</h3>
@@ -91,6 +96,38 @@
       localStorage.setItem('student_' + username, password);
       alert('Studenti u regjistrua!');
     }
+    function mbushDropdownStudente() {
+  const dropdown = document.getElementById("student-list");
+  dropdown.innerHTML = "";
+  for (let key in localStorage) {
+    if (key.startsWith("student_")) {
+      const studentName = key.replace("student_", "");
+      const option = document.createElement("option");
+      option.value = studentName;
+      option.text = studentName;
+      dropdown.appendChild(option);
+    }
+  }
+}
+
+function ndryshoTrajnerin() {
+  const studenti = document.getElementById("student-list").value;
+  const emriTrajnerit = document.getElementById("new-trainer-name").value.trim();
+  if (!emriTrajnerit) {
+    alert("Ju lutem shkruani emrin e trajnerit.");
+    return;
+  }
+
+  localStorage.setItem("trainer_for_student_" + studenti, emriTrajnerit);
+  alert("Trajneri për " + studenti + " u ndryshua në: " + emriTrajnerit);
+}
+
+window.onload = function () {
+  ngarkoOraret();
+  shfaqStatusStudentesh();
+  mbushDropdownStudente();
+}
+
 
     function ndryshoPasswordTrainer() {
       const newPass = document.getElementById('new-password-trainer').value;
