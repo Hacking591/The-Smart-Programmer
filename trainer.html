@@ -4,9 +4,101 @@
   <meta charset="UTF-8">
   <title>Portali i Trajnerit</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    input, select, button { margin: 5px 0; padding: 7px; }
-    .box { margin-bottom: 20px; }
+    <style>
+    * {
+      box-sizing: border-box;
+    }
+  
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #ffffff);
+      color: #333;
+      margin: 0;
+      padding: 30px;
+    }
+  
+    h1, h2, h3 {
+      color: #0077b6;
+    }
+  
+    input, select, textarea {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      background-color: #f9f9f9;
+      transition: 0.3s ease;
+    }
+  
+    input:focus, textarea:focus {
+      border-color: #00b4d8;
+      outline: none;
+      background-color: #fff;
+    }
+  
+    button {
+      background-color: #00b4d8;
+      color: white;
+      padding: 10px 18px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+  
+    button:hover {
+      background-color: #0077b6;
+      transform: scale(1.05);
+    }
+  
+    .box {
+      background-color: #ffffffcc;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+  
+    #messagesContainer > div {
+      background-color: #f1f1f1;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+  
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+  
+    hr {
+      border: none;
+      border-top: 1px solid #ccc;
+      margin: 10px 0;
+    }
+  
+    #trainerWelcome {
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  
+    #adminUsersList p, #adminMessages div {
+      background: #eef6f8;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+  
+    strong {
+      color: #0077b6;
+    }
+</style>
+
   </style>
 </head>
 <body>
