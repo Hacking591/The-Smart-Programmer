@@ -13,6 +13,11 @@
   <h1>Portali i Trajnerit</h1>
   <p id="trainerWelcome"></p>
   <button onclick="logout()">Dil</button>
+  <div class="box">
+  <h2>Menaxho Nxënësit</h2>
+  <div id="allStudents"></div>
+</div>
+
 
   <div class="box">
     <h2>Regjistro Student</h2>
@@ -125,6 +130,47 @@
 
     renderStudents();
     renderSchedule();
+    function renderAllStudents() {
+  const students = getStudents().filter(s => s.trainer === user.username);
+  const container = document.getElementById("allStudents");
+  container.innerHTML = "";
+
+  students.forEach((s, i) => {
+    container.innerHTML += `
+      <div>
+        <strong>${s.name}</strong>
+        <button onclick="sendMessage('${s.name}')">Dërgo Mesazh</button>
+        <button onclick="deleteStudent(${i})">Fshij</button>
+      </div>
+    `;
+  });
+}
+
+function sendMessage(studentName) {
+  const msg = prompt(`Shkruaj mesazhin për ${studentName}:`);
+  if (!msg) return;
+
+  const messages = JSON.parse(localStorage.getItem("messages")) || [];
+  messages.push({
+    to: studentName,
+    from: user.username,
+    text: msg,
+    date: new Date().toLocaleString()
+  });
+  localStorage.setItem("messages", JSON.stringify(messages));
+  alert("Mesazhi u dërgua!");
+}
+
+function deleteStudent(index) {
+  let students = getStudents().filter(s => s.trainer === user.username);
+  const allStudents = getStudents();
+  const studentToRemove = students[index];
+  const updated = allStudents.filter(s => s.name !== studentToRemove.name);
+  saveStudents(updated);
+  renderStudents();
+  renderAllStudents();
+}
+
   </script>
 </body>
 </html>
