@@ -4,101 +4,8 @@
   <meta charset="UTF-8">
   <title>Portali i Nxënësit</title>
   <style>
-   <style>
-    * {
-      box-sizing: border-box;
-    }
-  
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #e0f7fa, #ffffff);
-      color: #333;
-      margin: 0;
-      padding: 30px;
-    }
-  
-    h1, h2, h3 {
-      color: #0077b6;
-    }
-  
-    input, select, textarea {
-      width: 100%;
-      max-width: 400px;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      background-color: #f9f9f9;
-      transition: 0.3s ease;
-    }
-  
-    input:focus, textarea:focus {
-      border-color: #00b4d8;
-      outline: none;
-      background-color: #fff;
-    }
-  
-    button {
-      background-color: #00b4d8;
-      color: white;
-      padding: 10px 18px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-  
-    button:hover {
-      background-color: #0077b6;
-      transform: scale(1.05);
-    }
-  
-    .box {
-      background-color: #ffffffcc;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      padding: 20px;
-      margin-bottom: 25px;
-    }
-  
-    #messagesContainer > div {
-      background-color: #f1f1f1;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-  
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-  
-    hr {
-      border: none;
-      border-top: 1px solid #ccc;
-      margin: 10px 0;
-    }
-  
-    #trainerWelcome {
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-  
-    #adminUsersList p, #adminMessages div {
-      background: #eef6f8;
-      padding: 8px 12px;
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
-  
-    strong {
-      color: #0077b6;
-    }
-</style>
-
+    body { font-family: Arial; padding: 20px; }
+    .box { margin-bottom: 20px; }
   </style>
 </head>
 <body>
@@ -114,43 +21,6 @@
     <h3>Orari i Mësimeve</h3>
     <div id="scheduleList"></div>
   </div>
-  <div class="box">
-    <h3>Mesazhet nga trajneri</h3>
-    <div id="messageBox"></div>
-  </div>
-  <div class="box">
-    <h3>Dërgo Mesazh Tek Trajneri</h3>
-    <textarea id="studentMessage" rows="3" placeholder="Shkruaj mesazhin këtu..."></textarea><br>
-    <button onclick="sendMessageToTrainer()">Dërgo</button>
-  </div>
-  <h2>Mesazh për Trajnerin</h2>
-  <textarea id="studentMessage" placeholder="Shkruaj mesazhin këtu..."></textarea><br>
-  <button onclick="sendMessage()">Dërgo Mesazh</button>
-
-  <script>
-    function sendMessage() {
-      const message = document.getElementById("studentMessage").value.trim();
-      if (!message) {
-        alert("Ju lutem shkruani një mesazh.");
-        return;
-      }
-
-      const messages = JSON.parse(localStorage.getItem("trainerMessages")) || [];
-      const user = JSON.parse(localStorage.getItem("loggedInUser"));
-
-      messages.push({
-        from: user.username,
-        text: message,
-        timestamp: new Date().toLocaleString()
-      });
-
-      localStorage.setItem("trainerMessages", JSON.stringify(messages));
-      alert("Mesazhi u dërgua!");
-      document.getElementById("studentMessage").value = "";
-    }
-  </script>
-
-
 
   <script>
     const user = JSON.parse(localStorage.getItem("loggedUser"));
@@ -174,81 +44,6 @@
     document.getElementById("scheduleList").innerHTML = filtered.map(s =>
       `<div>${s.day} - ${s.time} - Tema: ${s.topic}</div>`
     ).join("");
-    function changePassword() {
-    const oldPass = document.getElementById("oldPass").value;
-    const newPass = document.getElementById("newPass").value;
-  
-    if (!oldPass || !newPass) return alert("Plotëso të dy fjalëkalimet");
-  
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const index = users.findIndex(u => u.username === user.username && u.password === oldPass);
-  
-    if (index === -1) return alert("Fjalëkalimi i vjetër nuk është i saktë");
-  
-    users[index].password = newPass;
-    localStorage.setItem("users", JSON.stringify(users));
-  
-    // Përditëso edhe user-in e loguar aktual
-    localStorage.setItem("loggedUser", JSON.stringify(users[index]));
-  
-    alert("Fjalëkalimi u ndryshua me sukses!");
-    document.getElementById("oldPass").value = "";
-    document.getElementById("newPass").value = "";
-  }
-    function renderMessages() {
-    const messages = JSON.parse(localStorage.getItem("messages")) || [];
-    const box = document.getElementById("messageBox");
-  
-    const userMessages = messages.filter(m => m.to === user.username);
-    if (userMessages.length === 0) {
-      box.innerHTML = "<p>Nuk ka mesazhe.</p>";
-      return;
-    }
-  
-    box.innerHTML = userMessages.map(m =>
-      `<div><strong>${m.from}:</strong> ${m.text} <em>(${m.date})</em></div>`
-    ).join("");
-  }
-  
-  renderMessages();
-    function sendMessageToTrainer() {
-    const msg = document.getElementById("studentMessage").value;
-    if (!msg) return alert("Shkruaj një mesazh.");
-  
-    const messages = JSON.parse(localStorage.getItem("messages")) || [];
-    messages.push({
-      to: user.trainer,
-      from: user.username,
-      text: msg,
-      date: new Date().toLocaleString()
-    });
-    localStorage.setItem("messages", JSON.stringify(messages));
-    alert("Mesazhi u dërgua!");
-    document.getElementById("studentMessage").value = "";
-  }
-
-
-
   </script>
-  <script>
-    // Kontrollo rolin në localStorage
-    const role = localStorage.getItem("role");
-    if (role !== "student") {
-      alert("Ju nuk keni lejen për të hyrë këtu!");
-      window.location.href = "login.html";  // Kthehu në login
-    }
-
-    function logout() {
-      alert("Keni dalë nga sistemi!");
-      window.location.href = "login.html";  // Kthehu në login
-    }
-  </script>
-  <div class="box">
-    <h3>Ndrysho Fjalëkalimin</h3>
-    <input type="password" id="oldPass" placeholder="Fjalëkalimi i vjetër" /><br>
-    <input type="password" id="newPass" placeholder="Fjalëkalimi i ri" /><br>
-    <button onclick="changePassword()">Ndrysho</button>
-  </div>
-
 </body>
 </html>
