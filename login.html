@@ -183,6 +183,38 @@
     });
   }
   </script>
+  <script>
+    // Funksioni i login për kontrollimin e kredencialeve
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const role = document.getElementById("role").value; // Merr rolin nga dropdown
+
+      // Username dhe Password hardkoduar në JS për testim
+      const correctUsername = "Gert Lula";  // Username i hardkoduar
+      const correctPassword = "Acc3ss@trajner";   // Password i hardkoduar
+
+      const correctUsername = "Danjal Fusha";  // Username i hardkoduar
+      const correctPassword = "1234";   // Password i hardkoduar
+
+      // Kontrollo kredencialet
+      if (username === correctUsername && password === correctPassword) {
+        alert("Login i suksesshëm!");
+
+        // Ruaj rolin e përdoruesit në localStorage
+        localStorage.setItem("role", role); 
+
+        // Redirect te faqja përkatëse
+        if (role === "trainer") {
+          window.location.href = "trainer.html";  // Përdoruesi është trajner
+        } else {
+          window.location.href = "student.html";  // Përdoruesi është nxënës
+        }
+      } else {
+        alert("Kredenciale të pasakta!");
+      }
+    }
+  </script>
 
 </body>
 </html>
