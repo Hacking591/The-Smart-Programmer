@@ -239,6 +239,64 @@ window.onload = function () {
       });
     }
 </script>
+  <script>
+  // Array statik me oraret fillestare
+  let oraret = [
+    "E marte, 22 prill 2025 - 15:00 deri 16:00",
+    "E marte, 29 prill 2025 - 15:00 deri 16:00",
+    "E marte, 6 maj 2025 - 15:00 deri 16:00",
+    "E marte, 13 maj 2025 - 15:00 deri 16:00",
+    "E marte, 27 maj 2025 - 15:00 deri 16:00",
+    "E marte, 3 qershor 2025 - 15:00 deri 16:00",
+    "E marte, 10 qershor 2025 - 15:00 deri 16:00",
+    "E marte, 17 qershor 2025 - 15:00 deri 16:00"
+  ];
+
+  function ngarkoOraret() {
+    const lista = document.getElementById('orari-list');
+    lista.innerHTML = "";
+
+    oraret.forEach((orar, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span>${orar}</span>
+        <div class="actions">
+          <button onclick="editoOrar(${index})">✏️</button>
+          <button onclick="fshiOrar(${index})">🗑️</button>
+        </div>`;
+      lista.appendChild(li);
+    });
+  }
+
+  function shtoOrar() {
+    const orar = document.getElementById('input-orar').value;
+    if (!orar) return;
+    oraret.push(orar);
+    document.getElementById('input-orar').value = "";
+    ngarkoOraret();
+  }
+
+  function fshiOrar(index) {
+    oraret.splice(index, 1);
+    ngarkoOraret();
+  }
+
+  function editoOrar(index) {
+    const orariRi = prompt("Shkruaj orarin e ri:", oraret[index]);
+    if (orariRi) {
+      oraret[index] = orariRi;
+      ngarkoOraret();
+    }
+  }
+
+  window.onload = function () {
+    ngarkoOraret();
+    shfaqStatusStudentesh();
+    mbushDropdownStudente();
+    shfaqMesazhetStudenteve();
+  };
+</script>
+
 
 <!-- Shembull input për trajnerin -->
 <textarea id="mesazhi" placeholder="Shkruaj mesazhin këtu..."></textarea>
