@@ -2,7 +2,6 @@
 <html lang="sq">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Video Call - Studenti</title>
   <style>
     #video-container { display: none; }
@@ -13,7 +12,7 @@
   <h2>Video Call - Studenti</h2>
   <label for="roomInput">Shkruaj Emrin e Dhomës:</label>
   <input type="text" id="roomInput" placeholder="Emri i dhomës (p.sh. kursi1)">
-  <button onclick="joinCall()">Lidh Video Call</button>
+  <button onclick="joinCall()">Bashkohu te Video Call</button>
   <div id="video-container">
     <video id="myVideo" autoplay muted></video>
     <video id="remoteVideo" autoplay></video>
@@ -37,16 +36,15 @@
       localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       document.getElementById("myVideo").srcObject = localStream;
 
-      // Krijo peer dhe lidhu me dhomën
-      peer = new Peer(undefined, {
+      // Krijon një Peer ID të rastësishëm për studentin
+      peer = new Peer({
         host: 'peerjs.com',
         port: 443,
         secure: true
       });
 
-      // Kur peer është i hapur, bëni thirrje për dhomën
       peer.on("open", (id) => {
-        const call = peer.call(roomId, localStream);
+        const call = peer.call(roomId, localStream);  // Telefonon trajnerin me emrin e dhomës
         call.on("stream", (remoteStream) => {
           document.getElementById("remoteVideo").srcObject = remoteStream;
         });
