@@ -46,42 +46,12 @@
     <ul id="orari-list"></ul>
     <h3>👥 Studentët dhe Statusi</h3>
     <ul id="lista-studenteve-status"></ul>
-    <h3>📹 Video Call me Studentin</h3>
-<input type="text" id="room-name" placeholder="Emri i dhomës (p.sh. kursi1)">
-<button onclick="startVideoCall()">Nis Video Call</button>
-<div id="video-call" style="height: 500px; margin-top: 20px;"></div>
-
-<script src='https://meet.jit.si/external_api.js'></script>
-<script>
-    function startVideoCall() {
-      const roomName = document.getElementById("room-name").value.trim();
-      if (!roomName) {
-        alert("Ju lutem shkruani një emër dhome.");
-        return;
-      }
-  
-      const domain = "meet.jit.si";
-      const options = {
-        roomName: roomName,
-        width: "100%",
-        height: 500,
-        parentNode: document.getElementById("video-call"),
-        interfaceConfigOverwrite: {
-          filmStripOnly: false
-        },
-        configOverwrite: {
-          disableSimulcast: false
-        }
-      };
-      const api = new JitsiMeetExternalAPI(domain, options);
-    }
- </script>
 
     <h3>🔄 Ndrysho trajnerin e studentit</h3>
     <select id="student-list"></select>
     <input type="text" id="new-trainer-name" placeholder="Emri i ri i trajnerit">
     <button onclick="ndryshoTrajnerin()">Ndrysho Trajnerin</button>
-
+    <a href="video-call.html">Krijo nje Video Call</a>
 
 
     <h3>➕ Regjistro Student</h3>
