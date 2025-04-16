@@ -37,12 +37,14 @@
       localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       document.getElementById("myVideo").srcObject = localStream;
 
+      // Krijo peer dhe lidhu me dhomën
       peer = new Peer(undefined, {
         host: 'peerjs.com',
         port: 443,
         secure: true
       });
 
+      // Kur peer është i hapur, bëni thirrje për dhomën
       peer.on("open", (id) => {
         const call = peer.call(roomId, localStream);
         call.on("stream", (remoteStream) => {
