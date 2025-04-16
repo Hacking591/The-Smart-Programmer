@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Video Call - Trajneri</title>
   <style>
-    #video-container { display: none; }
-    video { width: 45%; margin: 5px; }
+    #video-container { display: none; display: flex; justify-content: space-between; }
+    video { width: 45%; margin: 5px; border: 2px solid #333; }
+    #joinRoom { margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -14,6 +15,7 @@
   <label for="roomInput">Shkruaj Emrin e Dhomës:</label>
   <input type="text" id="roomInput" placeholder="Emri i dhomës (p.sh. kursi1)">
   <button onclick="startCall()">Nis Video Call</button>
+
   <div id="video-container">
     <video id="myVideo" autoplay muted></video>
     <video id="remoteVideo" autoplay></video>
@@ -32,23 +34,20 @@
         return;
       }
 
-      // Fsheh inputin dhe butonin pas nisjes së video call
       document.getElementById("video-container").style.display = "flex";
 
-      // Merrni kamerën dhe mikrofoni
       localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       document.getElementById("myVideo").srcObject = localStream;
 
-      // Krijo peer
+      // Krijo Peer për trajnerin
       peer = new Peer(roomId, {
         host: 'peerjs.com',
         port: 443,
         secure: true
       });
 
-      // Kur dikush i telefonon (studenti)
       peer.on("call", (call) => {
-        call.answer(localStream);  // Përgjigju dhe dërgo kamerën lokale
+        call.answer(localStream);
         call.on("stream", (remoteStream) => {
           document.getElementById("remoteVideo").srcObject = remoteStream;
         });
