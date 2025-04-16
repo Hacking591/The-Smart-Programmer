@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Call - Studenti</title>
+  <style>
+    #video-container { display: none; }
+    video { width: 45%; margin: 5px; }
+  </style>
+</head>
+<body>
+  <h2>Video Call - Studenti</h2>
+  <label for="roomInput">Shkruaj Emrin e Dhomës:</label>
+  <input type="text" id="roomInput" placeholder="Emri i dhomës (p.sh. kursi1)">
+  <button onclick="joinCall()">Lidh Video Call</button>
+  <div id="video-container">
+    <video id="myVideo" autoplay muted></video>
+    <video id="remoteVideo" autoplay></video>
+  </div>
+
+  <script src="https://cdn.peerjs.com/peerjs/0.3/peer.min.js"></script>
+  <script>
+    let peer;
+    let localStream;
+    let currentCall;
+
+    async function joinCall() {
+      const roomId = document.getElementById("roomInput").value.trim();
+      if (!roomId) {
+        alert("Shkruaj një emër dhome.");
+        return;
+      }
+
+      document.getElementById("video-container").style.display = "flex";
+
+      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      document.getElementById("myVideo").srcObject = localStream;
+
+      peer = new Peer(undefined, {
+        host: 'peerjs.com',
+        port: 443,
+        secure: true
+      });
+
+      peer.on("open", (id) => {
+        const call = peer.call(roomId, localStream);
+        call.on("stream", (remoteStream) => {
+          document.getElementById("remoteVideo").srcObject = remoteStream;
+        });
+        currentCall = call;
+      });
+    }
+  </script>
+</body>
+</html>
