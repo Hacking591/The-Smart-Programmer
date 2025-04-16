@@ -43,6 +43,12 @@
   <h1>💻 Video Call Room</h1>
   <input type="text" id="roomInput" placeholder="Shkruaj emrin e dhomës (p.sh. kursi1)" />
   <button onclick="joinCall()">Lidhu në thirrje</button>
+  <!-- Shto këtë pjesë në form -->
+  <select id="role">
+    <option value="trainer">Trajner</option>
+    <option value="student">Student</option>
+  </select>
+
 
   <div id="video-container" style="display:none;">
     <div>
@@ -67,6 +73,54 @@
         alert("Shkruaj një emër dhome.");
         return;
       }
+      async function joinCall() {
+      const roomId = document.getElementById("roomInput").value.trim();
+      const role = document.getElementById("role").value;
+    
+      if (!roomId) {
+        alert("Shkruaj një emër dhome.");
+        return;
+      }
+    
+      document.getElementById("video-container").style.display = "flex";
+    
+      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      document.getElementById("myVideo").srcObject = localStream;
+    
+      if (role === "trainer") {
+        // Trajneri: krijon peer me ID dhome
+        peer = new Peer(roomId, {
+          host: 'peerjs.com',
+          port: 443,
+          secure: true
+        });
+    
+        peer.on("call", (call) => {
+          call.answer(localStream);
+          call.on("stream", (remoteStream) => {
+            document.getElementById("remoteVideo").srcObject = remoteStream;
+          });
+          currentCall = call;
+        });
+    
+      } else {
+        // Studenti: krijon peer me ID të rastësishme
+        peer = new Peer(undefined, {
+          host: 'peerjs.com',
+          port: 443,
+          secure: true
+        });
+    
+        peer.on("open", (id) => {
+          const call = peer.call(roomId, localStream);
+          call.on("stream", (remoteStream) => {
+            document.getElementById("remoteVideo").srcObject = remoteStream;
+          });
+          currentCall = call;
+        });
+      }
+    }
+
 
       document.getElementById("video-container").style.display = "flex";
 
